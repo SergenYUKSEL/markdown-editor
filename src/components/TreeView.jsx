@@ -13,6 +13,7 @@ function TreeView({
   const [expanded, setExpanded] = useState({});
   const [contextMenu, setContextMenu] = useState(null);
   const [draggedItem, setDraggedItem] = useState(null);
+  const [dragOverItem, setDragOverItem] = useState(null);
 
   // Toggle expand/collapse
   const toggleExpand = (id) => {
@@ -36,33 +37,115 @@ function TreeView({
     setContextMenu(null);
   };
 
+  // Fonction utilitaire pour vérifier si un nœud est un descendant d'un autre
+  const isDescendant = (parentId, childId, node = tree) => {
+    if (node.id === childId) return false;
+    if (node.id === parentId) {
+      // Vérifier si childId est dans les descendants
+      const findInChildren = (n) => {
+        if (n.id === childId) return true;
+        if (n.children) {
+          return n.children.some(child => findInChildren(child));
+        }
+        return false;
+      };
+      return findInChildren(node);
+    }
+    if (node.children) {
+      return node.children.some(child => isDescendant(parentId, childId, child));
+    }
+    return false;
+  };
+
   // Gestion du drag & drop
   const handleDragStart = (e, item) => {
     setDraggedItem(item);
     e.dataTransfer.effectAllowed = 'move';
+    // Optionnel : ajouter des données pour le drag
+    e.dataTransfer.setData('text/plain', item.id);
   };
 
-  const handleDragOver = (e) => {
+  const handleDragOver = (e, targetItem) => {
     e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
+    e.stopPropagation();
+    
+    if (!draggedItem || !targetItem) {
+      e.dataTransfer.dropEffect = 'none';
+      return;
+    }
+
+    // Ne pas permettre de drop sur l'élément lui-même
+    if (draggedItem.id === targetItem.id) {
+      e.dataTransfer.dropEffect = 'none';
+      setDragOverItem(null);
+      return;
+    }
+
+    // Ne pas permettre de déplacer un dossier dans ses propres descendants
+    if (draggedItem.type === 'folder' && isDescendant(draggedItem.id, targetItem.id, tree)) {
+      e.dataTransfer.dropEffect = 'none';
+      setDragOverItem(null);
+      return;
+    }
+
+    // Permettre le drop uniquement sur les dossiers ou à la racine
+    if (targetItem.type === 'folder' || targetItem.id === 'root') {
+      e.dataTransfer.dropEffect = 'move';
+      setDragOverItem(targetItem.id);
+    } else {
+      e.dataTransfer.dropEffect = 'none';
+      setDragOverItem(null);
+    }
+  };
+
+  const handleDragLeave = (e) => {
+    // Ne réinitialiser que si on quitte vraiment la zone (pas juste un enfant)
+    const relatedTarget = e.relatedTarget;
+    if (!relatedTarget || !e.currentTarget.contains(relatedTarget)) {
+      setDragOverItem(null);
+    }
   };
 
   const handleDrop = (e, targetItem) => {
     e.preventDefault();
+    e.stopPropagation();
     
-    if (!draggedItem || !targetItem) return;
+    if (!draggedItem || !targetItem) {
+      setDraggedItem(null);
+      setDragOverItem(null);
+      return;
+    }
     
-    // Ne pas déplacer un élément sur lui-même ou dans son propre parent
-    if (draggedItem.id === targetItem.id) return;
-    
-    // Vérifier que la cible est un dossier
-    if (targetItem.type !== 'folder') return;
+    // Ne pas déplacer un élément sur lui-même
+    if (draggedItem.id === targetItem.id) {
+      setDraggedItem(null);
+      setDragOverItem(null);
+      return;
+    }
 
-    if (onMove) {
-      onMove(draggedItem.id, targetItem.id);
+    // Ne pas permettre de déplacer un dossier dans ses propres descendants
+    if (draggedItem.type === 'folder' && isDescendant(draggedItem.id, targetItem.id, tree)) {
+      setDraggedItem(null);
+      setDragOverItem(null);
+      return;
+    }
+    
+    // Vérifier que la cible est un dossier ou la racine
+    if (targetItem.type === 'folder' || targetItem.id === 'root') {
+      const targetParentId = targetItem.id === 'root' ? 'root' : targetItem.id;
+      
+      if (onMove) {
+        onMove(draggedItem.id, targetParentId);
+      }
     }
     
     setDraggedItem(null);
+    setDragOverItem(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedItem(null);
+    setDragOverItem(null);
   };
 
   // Rendu récursif d'un élément de l'arbre
@@ -70,6 +153,9 @@ function TreeView({
     const isExpanded = expanded[node.id];
     const isFolder = node.type === 'folder';
     const hasChildren = node.children && node.children.length > 0;
+    const isDragged = draggedItem?.id === node.id;
+    const isDragOver = dragOverItem === node.id;
+    const isDragging = draggedItem !== null;
 
     return (
       <div key={node.id}>
@@ -77,23 +163,35 @@ function TreeView({
           style={{
             padding: '0.25rem 0.5rem',
             paddingLeft: `${level * 1.5}rem`,
-            cursor: 'pointer',
+            cursor: isDragging ? (isDragOver && isFolder ? 'move' : 'not-allowed') : 'pointer',
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
-            backgroundColor: contextMenu?.item?.id === node.id ? '#e3f2fd' : 'transparent',
+            backgroundColor: isDragOver && isFolder 
+              ? '#e3f2fd' 
+              : contextMenu?.item?.id === node.id 
+                ? '#e3f2fd' 
+                : isDragged 
+                  ? '#f0f0f0' 
+                  : 'transparent',
             userSelect: 'none',
-            draggable: true,
-            onDragStart: (e) => handleDragStart(e, node),
-            onDragOver: handleDragOver,
-            onDrop: (e) => handleDrop(e, node),
-            onContextMenu: (e) => handleContextMenu(e, node),
-            onClick: () => {
-              if (isFolder) {
-                toggleExpand(node.id);
-              } else if (onSelect) {
-                onSelect(node);
-              }
+            opacity: isDragged ? 0.5 : 1,
+            border: isDragOver && isFolder ? '2px dashed #007bff' : '2px solid transparent',
+            borderRadius: '0.25rem',
+            transition: 'all 0.2s'
+          }}
+          draggable={true}
+          onDragStart={(e) => handleDragStart(e, node)}
+          onDragOver={(e) => handleDragOver(e, node)}
+          onDragLeave={handleDragLeave}
+          onDrop={(e) => handleDrop(e, node)}
+          onDragEnd={handleDragEnd}
+          onContextMenu={(e) => handleContextMenu(e, node)}
+          onClick={() => {
+            if (isFolder) {
+              toggleExpand(node.id);
+            } else if (onSelect) {
+              onSelect(node);
             }
           }}
         >
@@ -141,12 +239,60 @@ function TreeView({
         border: '1px solid #ccc'
       }}
       onClick={closeContextMenu}
+      onDragOver={(e) => {
+        // Permettre le drop à la racine
+        e.preventDefault();
+        if (draggedItem) {
+          e.dataTransfer.dropEffect = 'move';
+          setDragOverItem('root');
+        }
+      }}
+      onDragLeave={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) {
+          setDragOverItem(null);
+        }
+      }}
+      onDrop={(e) => {
+        e.preventDefault();
+        if (draggedItem && onMove) {
+          onMove(draggedItem.id, 'root');
+        }
+        setDraggedItem(null);
+        setDragOverItem(null);
+      }}
     >
+      {draggedItem && dragOverItem === 'root' && (
+        <div
+          style={{
+            padding: '0.5rem',
+            marginBottom: '0.5rem',
+            backgroundColor: '#e3f2fd',
+            border: '2px dashed #007bff',
+            borderRadius: '0.25rem',
+            textAlign: 'center',
+            color: '#007bff',
+            fontWeight: 'bold'
+          }}
+        >
+          Déposer ici pour déplacer à la racine
+        </div>
+      )}
       {tree && tree.children && tree.children.length > 0 ? (
         tree.children.map(child => renderTreeNode(child))
       ) : (
-        <div style={{ padding: '1rem', color: '#666', textAlign: 'center' }}>
-          Aucun fichier ou dossier
+        <div 
+          style={{ 
+            padding: '1rem', 
+            color: '#666', 
+            textAlign: 'center',
+            border: dragOverItem === 'root' ? '2px dashed #007bff' : 'none',
+            borderRadius: '0.25rem',
+            backgroundColor: dragOverItem === 'root' ? '#e3f2fd' : 'transparent'
+          }}
+        >
+          {draggedItem && dragOverItem === 'root' 
+            ? 'Déposer ici pour déplacer à la racine' 
+            : 'Aucun fichier ou dossier'}
         </div>
       )}
 
