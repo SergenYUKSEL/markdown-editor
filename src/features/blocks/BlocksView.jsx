@@ -62,11 +62,15 @@ function BlocksView() {
             style={{ display: "none" }}
             id="import-blocks-input"
           />
-          <label htmlFor="import-blocks-input">
-            <Button variant="secondary" size="small" as="span">
-              📥 Importer
-            </Button>
-          </label>
+          <Button 
+            variant="secondary" 
+            size="small"
+            onClick={() => {
+              document.getElementById("import-blocks-input")?.click();
+            }}
+          >
+            📥 Importer
+          </Button>
           <Button onClick={handleCreate} variant="primary" size="small">
             + Nouveau bloc
           </Button>
