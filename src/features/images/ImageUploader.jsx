@@ -142,11 +142,15 @@ function ImageUploader({ isOpen, onClose }) {
               style={{ display: "none" }}
               id="image-upload-input"
             />
-            <label htmlFor="image-upload-input">
-              <Button variant="primary" size="small" as="span">
-                Sélectionner un fichier
-              </Button>
-            </label>
+            <Button 
+              variant="primary" 
+              size="small"
+              onClick={() => {
+                document.getElementById("image-upload-input")?.click();
+              }}
+            >
+              Sélectionner un fichier
+            </Button>
           </div>
         ) : (
           <div>

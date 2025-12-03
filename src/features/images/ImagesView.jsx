@@ -52,7 +52,7 @@ function ImagesView() {
         }}
       >
         <h1 style={{ margin: 0 }}>Bibliothèque d'images</h1>
-        <div style={{ display: "flex", gap: "0.5rem" }}>
+        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
           <input
             type="file"
             accept=".json"
@@ -60,24 +60,41 @@ function ImagesView() {
             style={{ display: "none" }}
             id="import-images-input"
           />
-          <label htmlFor="import-images-input">
-            <Button variant="secondary" size="small" as="span">
-              📥 Importer
-            </Button>
-          </label>
+          <Button 
+            variant="secondary" 
+            size="small"
+            onClick={() => {
+              document.getElementById("import-images-input")?.click();
+            }}
+          >
+            📥 Importer (JSON)
+          </Button>
           {images.length > 0 && (
             <Button onClick={handleClearAll} variant="danger" size="small">
               🗑️ Tout supprimer
             </Button>
           )}
           <Button
-            onClick={() => setShowUploader(true)}
+            onClick={() => {
+              setShowUploader(true);
+            }}
             variant="primary"
             size="small"
           >
             + Ajouter une image
           </Button>
         </div>
+      </div>
+      
+      <div style={{ 
+        marginBottom: "1rem", 
+        padding: "0.75rem", 
+        backgroundColor: "#e3f2fd", 
+        borderRadius: "0.25rem",
+        fontSize: "0.875rem"
+      }}>
+        <strong>💡 Note :</strong> "Importer" charge un fichier JSON d'images exportées. 
+        "Ajouter une image" permet d'uploader une nouvelle image depuis votre ordinateur.
       </div>
 
       <ImageLibrary />

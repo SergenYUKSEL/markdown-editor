@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import Modal from "../../components/Modal";
 import Button from "../../components/Button";
 import { addBlock, updateBlock } from "../../store/slices/blocksSlice";
+import { SHORTCUT_PRESETS, getShortcutValue, formatShortcut, isMac } from "../../utils/keyboardUtils";
 
 function BlockEditor({ isOpen, onClose, block = null }) {
   const dispatch = useDispatch();
@@ -133,20 +134,58 @@ function BlockEditor({ isOpen, onClose, block = null }) {
           <label style={{ display: "block", marginBottom: "0.5rem" }}>
             Raccourci clavier (optionnel)
           </label>
-          <input
-            type="text"
-            value={shortcut}
-            onChange={(e) => setShortcut(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "0.5rem",
-              border: "1px solid #ccc",
+          <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.5rem" }}>
+            <input
+              type="text"
+              value={shortcut}
+              onChange={(e) => setShortcut(e.target.value)}
+              style={{
+                flex: 1,
+                padding: "0.5rem",
+                border: "1px solid #ccc",
+                borderRadius: "0.25rem",
+              }}
+              placeholder={isMac() ? "Ex: Cmd+Shift+B" : "Ex: Ctrl+Shift+B"}
+            />
+            <select
+              value=""
+              onChange={(e) => {
+                if (e.target.value) {
+                  setShortcut(getShortcutValue(SHORTCUT_PRESETS.find(p => p.value === e.target.value || p.macValue === e.target.value)));
+                  e.target.value = "";
+                }
+              }}
+              style={{
+                padding: "0.5rem",
+                border: "1px solid #ccc",
+                borderRadius: "0.25rem",
+                backgroundColor: "#fff",
+              }}
+            >
+              <option value="">Présets...</option>
+              {SHORTCUT_PRESETS.map((preset) => (
+                <option key={preset.value} value={preset.value}>
+                  {preset.label} ({formatShortcut(getShortcutValue(preset))})
+                </option>
+              ))}
+            </select>
+          </div>
+          {shortcut && (
+            <div style={{ 
+              padding: "0.5rem", 
+              backgroundColor: "#e3f2fd", 
               borderRadius: "0.25rem",
-            }}
-            placeholder="Ex: Ctrl+Shift+B"
-          />
+              fontSize: "0.875rem",
+              marginBottom: "0.5rem"
+            }}>
+              Raccourci: <strong>{formatShortcut(shortcut)}</strong>
+            </div>
+          )}
           <small style={{ color: "#666" }}>
-            Le raccourci sera utilisé pour insérer ce bloc dans l'éditeur
+            {isMac() 
+              ? "Sur Mac, utilisez Cmd au lieu de Ctrl. Le raccourci sera utilisé pour insérer ce bloc dans l'éditeur."
+              : "Le raccourci sera utilisé pour insérer ce bloc dans l'éditeur."
+            }
           </small>
         </div>
 

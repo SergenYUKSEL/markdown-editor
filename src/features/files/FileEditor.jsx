@@ -43,9 +43,15 @@ function FileEditor() {
   };
 
   const handleExport = () => {
-    if (currentFile && currentContent) {
-      exportMarkdownFile(currentContent, currentFile.name);
+    if (!currentFile) {
+      alert("Aucun fichier ouvert");
+      return;
     }
+    if (!currentContent) {
+      alert("Le fichier est vide");
+      return;
+    }
+    exportMarkdownFile(currentContent, currentFile.name);
   };
 
   const handleInsertBlock = () => {
@@ -178,6 +184,7 @@ function FileEditor() {
               onChange={handleContentChange}
               onInsertBlock={handleInsertBlock}
               onInsertImage={handleInsertImage}
+              blocks={blocks}
             />
           </div>
         )}

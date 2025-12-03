@@ -1,26 +1,54 @@
 import { useRef, useEffect } from 'react';
+import { matchesShortcut, isMac } from '../utils/keyboardUtils';
 
 // But : éditeur de texte pour Markdown
-// Props : value, onChange, placeholder, onInsertBlock, onInsertImage
+// Props : value, onChange, placeholder, onInsertBlock, onInsertImage, blocks
 function MarkdownEditor({ 
   value = '', 
   onChange, 
   placeholder = 'Écrivez votre Markdown ici...',
   onInsertBlock,
-  onInsertImage
+  onInsertImage,
+  blocks = []
 }) {
   const textareaRef = useRef(null);
 
   // Gestion des raccourcis clavier pour les blocs
   useEffect(() => {
-    if (!onInsertBlock) return;
-
     const handleKeyDown = (e) => {
-      // Détecter les raccourcis (ex: Ctrl+Shift+B pour ouvrir la liste de blocs)
-      // Cette logique peut être étendue selon les besoins
-      if (e.ctrlKey && e.shiftKey && e.key === 'B') {
+      // Vérifier d'abord les raccourcis personnalisés des blocs
+      for (const block of blocks) {
+        if (block.shortcut && matchesShortcut(e, block.shortcut)) {
+          e.preventDefault();
+          // Insérer directement le bloc
+          const placeholder = `{{block(${block.id})}}`;
+          const textarea = textareaRef.current;
+          if (textarea) {
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const newValue = value.substring(0, start) + placeholder + value.substring(end);
+            
+            if (onChange) {
+              onChange({ target: { value: newValue } });
+            }
+
+            // Repositionner le curseur
+            setTimeout(() => {
+              textarea.focus();
+              const newPosition = start + placeholder.length;
+              textarea.setSelectionRange(newPosition, newPosition);
+            }, 0);
+          }
+          return;
+        }
+      }
+
+      // Raccourci par défaut pour ouvrir la liste de blocs (Ctrl+Shift+B ou Cmd+Shift+B)
+      const mac = isMac();
+      const modifierKey = mac ? e.metaKey : e.ctrlKey;
+      
+      if (modifierKey && e.shiftKey && e.key === 'B') {
         e.preventDefault();
-        // Appeler onInsertBlock sans paramètre pour ouvrir la sélection
         if (onInsertBlock) {
           onInsertBlock();
         }
@@ -32,7 +60,7 @@ function MarkdownEditor({
       textarea.addEventListener('keydown', handleKeyDown);
       return () => textarea.removeEventListener('keydown', handleKeyDown);
     }
-  }, [onInsertBlock]);
+  }, [onInsertBlock, blocks, value, onChange]);
 
   // Fonction pour insérer du texte à la position du curseur
   const insertText = (textToInsert) => {
@@ -127,7 +155,9 @@ function MarkdownEditor({
             type="button"
             onClick={() => handleInsertBlock()}
             style={{ padding: '0.25rem 0.5rem', fontSize: '0.875rem' }}
-            title="Insérer un bloc (Ctrl+Shift+B)"
+            title={isMac() 
+              ? "Insérer un bloc (Cmd+Shift+B)" 
+              : "Insérer un bloc (Ctrl+Shift+B)"}
           >
             📦 Bloc
           </button>
