@@ -3,10 +3,13 @@ import { useState } from "react";
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
 import { deleteImage, renameImage } from "../../store/slices/imagesSlice";
+import "../../styles/strangerThings.css";
 
 function ImageLibrary() {
   const dispatch = useDispatch();
   const images = useSelector((state) => state.images.images);
+  const theme = useSelector((state) => state.ui.theme);
+  const isStrangerThings = theme === "strangerThings";
   const [selectedImage, setSelectedImage] = useState(null);
   const [showRenameModal, setShowRenameModal] = useState(false);
   const [newName, setNewName] = useState("");
@@ -41,7 +44,14 @@ function ImageLibrary() {
 
   if (images.length === 0) {
     return (
-      <p style={{ color: "#666", textAlign: "center", padding: "2rem" }}>
+      <p 
+        style={{ 
+          color: isStrangerThings ? "#e50914" : "#666", 
+          textAlign: "center", 
+          padding: "2rem",
+          textShadow: isStrangerThings ? "0 0 5px #e50914" : "none"
+        }}
+      >
         Aucune image. Ajoutez votre première image pour commencer.
       </p>
     );
@@ -60,10 +70,11 @@ function ImageLibrary() {
           <div
             key={image.id}
             style={{
-              border: "1px solid #ccc",
+              border: isStrangerThings ? "2px solid #e50914" : "1px solid #ccc",
               borderRadius: "0.5rem",
               padding: "0.5rem",
-              backgroundColor: "#fff",
+              backgroundColor: isStrangerThings ? "#1a0000" : "#fff",
+              boxShadow: isStrangerThings ? "0 0 10px rgba(229, 9, 20, 0.3)" : "none",
             }}
           >
             {image.data && (
@@ -75,7 +86,8 @@ function ImageLibrary() {
                   height: "150px",
                   objectFit: "contain",
                   marginBottom: "0.5rem",
-                  backgroundColor: "#f8f9fa",
+                  backgroundColor: isStrangerThings ? "#0a0a0a" : "#f8f9fa",
+                  border: isStrangerThings ? "1px solid #e50914" : "none",
                 }}
               />
             )}
@@ -85,6 +97,8 @@ function ImageLibrary() {
                 fontWeight: "bold",
                 marginBottom: "0.5rem",
                 wordBreak: "break-word",
+                color: isStrangerThings ? "#e50914" : "inherit",
+                textShadow: isStrangerThings ? "0 0 5px #e50914" : "none"
               }}
             >
               {image.name}
@@ -94,6 +108,7 @@ function ImageLibrary() {
                 onClick={() => handleRename(image)}
                 variant="secondary"
                 size="small"
+                className={isStrangerThings ? "stranger-things-button" : ""}
               >
                 ✏️
               </Button>
@@ -102,6 +117,7 @@ function ImageLibrary() {
                   onClick={() => handleCopyBase64(image)}
                   variant="secondary"
                   size="small"
+                  className={isStrangerThings ? "stranger-things-button" : ""}
                 >
                   📋
                 </Button>
@@ -110,6 +126,7 @@ function ImageLibrary() {
                 onClick={() => handleDelete(image.id)}
                 variant="danger"
                 size="small"
+                className={isStrangerThings ? "stranger-things-button" : ""}
               >
                 🗑️
               </Button>
@@ -125,7 +142,13 @@ function ImageLibrary() {
         title="Renommer l'image"
       >
         <div>
-          <label style={{ display: "block", marginBottom: "0.5rem" }}>
+          <label 
+            style={{ 
+              display: "block", 
+              marginBottom: "0.5rem",
+              color: isStrangerThings ? "#e50914" : "inherit"
+            }}
+          >
             Nouveau nom :
           </label>
           <input
@@ -138,18 +161,25 @@ function ImageLibrary() {
             style={{
               width: "100%",
               padding: "0.5rem",
-              border: "1px solid #ccc",
+              border: isStrangerThings ? "2px solid #e50914" : "1px solid #ccc",
               borderRadius: "0.25rem",
+              backgroundColor: isStrangerThings ? "#0a0a0a" : "white",
+              color: isStrangerThings ? "#e50914" : "inherit",
             }}
             autoFocus
           />
           <div style={{ marginTop: "1rem", display: "flex", gap: "0.5rem" }}>
-            <Button onClick={handleRenameSubmit} variant="primary">
+            <Button 
+              onClick={handleRenameSubmit} 
+              variant="primary"
+              className={isStrangerThings ? "stranger-things-button" : ""}
+            >
               Renommer
             </Button>
             <Button
               onClick={() => setShowRenameModal(false)}
               variant="secondary"
+              className={isStrangerThings ? "stranger-things-button" : ""}
             >
               Annuler
             </Button>

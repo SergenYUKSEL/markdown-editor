@@ -4,6 +4,7 @@ const initialState = {
   sidebarOpen: true,
   theme: "light",
   activeView: "files",
+  strangerThingsMusicPlaying: false,
 };
 
 const uiSlice = createSlice({
@@ -18,9 +19,16 @@ const uiSlice = createSlice({
     },
     setTheme: (state, action) => {
       state.theme = action.payload;
+      // Réinitialiser la musique si on change de thème
+      if (action.payload !== "strangerThings") {
+        state.strangerThingsMusicPlaying = false;
+      }
+    },
+    setStrangerThingsMusic: (state, action) => {
+      state.strangerThingsMusicPlaying = action.payload;
     },
   },
 });
 
-export const { toggleSidebar, setActiveView, setTheme } = uiSlice.actions;
+export const { toggleSidebar, setActiveView, setTheme, setStrangerThingsMusic } = uiSlice.actions;
 export default uiSlice.reducer;

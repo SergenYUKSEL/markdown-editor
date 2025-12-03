@@ -3,6 +3,7 @@ import Layout from './components/Layout.jsx'
 import FilesView from './features/files/FilesView.jsx'
 import BlocksView from './features/blocks/BlocksView.jsx'
 import ImagesView from './features/images/ImagesView.jsx'
+import CollaborationsView from './features/collaborations/CollaborationsView.jsx'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="files" element={<FilesView />} />
           <Route path="blocks" element={<BlocksView />} />
           <Route path="images" element={<ImagesView />} />
+          <Route path="collaborations" element={<CollaborationsView />} />
         </Route>
       </Routes>
     </BrowserRouter>

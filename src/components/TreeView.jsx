@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import '../styles/strangerThings.css';
 
 // But : afficher l'arborescence de fichiers/dossiers
 // Props : tree (structure depuis Redux), onSelect, onCreate, onRename, onDelete, onMove
@@ -10,6 +12,8 @@ function TreeView({
   onDelete, 
   onMove 
 }) {
+  const theme = useSelector((state) => state.ui.theme);
+  const isStrangerThings = theme === "strangerThings";
   const [expanded, setExpanded] = useState({});
   const [contextMenu, setContextMenu] = useState(null);
   const [draggedItem, setDraggedItem] = useState(null);
@@ -168,15 +172,18 @@ function TreeView({
             alignItems: 'center',
             gap: '0.5rem',
             backgroundColor: isDragOver && isFolder 
-              ? '#e3f2fd' 
+              ? (isStrangerThings ? '#1a0000' : '#e3f2fd')
               : contextMenu?.item?.id === node.id 
-                ? '#e3f2fd' 
+                ? (isStrangerThings ? '#1a0000' : '#e3f2fd')
                 : isDragged 
-                  ? '#f0f0f0' 
+                  ? (isStrangerThings ? '#1a0000' : '#f0f0f0')
                   : 'transparent',
+            color: isStrangerThings ? '#e50914' : 'inherit',
             userSelect: 'none',
             opacity: isDragged ? 0.5 : 1,
-            border: isDragOver && isFolder ? '2px dashed #007bff' : '2px solid transparent',
+            border: isDragOver && isFolder 
+              ? (isStrangerThings ? '2px dashed #00d4ff' : '2px dashed #007bff')
+              : '2px solid transparent',
             borderRadius: '0.25rem',
             transition: 'all 0.2s'
           }}
@@ -232,11 +239,14 @@ function TreeView({
 
   return (
     <div 
+      className={isStrangerThings ? "stranger-things-tree" : ""}
       style={{ 
         padding: '1rem',
         height: '100%',
         overflow: 'auto',
-        border: '1px solid #ccc'
+        border: isStrangerThings ? '2px solid #e50914' : '1px solid #ccc',
+        backgroundColor: isStrangerThings ? '#0a0a0a' : 'transparent',
+        color: isStrangerThings ? '#e50914' : 'inherit'
       }}
       onClick={closeContextMenu}
       onDragOver={(e) => {
@@ -266,12 +276,13 @@ function TreeView({
           style={{
             padding: '0.5rem',
             marginBottom: '0.5rem',
-            backgroundColor: '#e3f2fd',
-            border: '2px dashed #007bff',
+            backgroundColor: isStrangerThings ? '#1a0000' : '#e3f2fd',
+            border: isStrangerThings ? '2px dashed #00d4ff' : '2px dashed #007bff',
             borderRadius: '0.25rem',
             textAlign: 'center',
-            color: '#007bff',
-            fontWeight: 'bold'
+            color: isStrangerThings ? '#00d4ff' : '#007bff',
+            fontWeight: 'bold',
+            textShadow: isStrangerThings ? '0 0 10px #00d4ff' : 'none'
           }}
         >
           Déposer ici pour déplacer à la racine
@@ -283,11 +294,16 @@ function TreeView({
         <div 
           style={{ 
             padding: '1rem', 
-            color: '#666', 
+            color: isStrangerThings ? '#e50914' : '#666', 
             textAlign: 'center',
-            border: dragOverItem === 'root' ? '2px dashed #007bff' : 'none',
+            border: dragOverItem === 'root' 
+              ? (isStrangerThings ? '2px dashed #00d4ff' : '2px dashed #007bff')
+              : 'none',
             borderRadius: '0.25rem',
-            backgroundColor: dragOverItem === 'root' ? '#e3f2fd' : 'transparent'
+            backgroundColor: dragOverItem === 'root' 
+              ? (isStrangerThings ? '#1a0000' : '#e3f2fd')
+              : 'transparent',
+            textShadow: isStrangerThings ? '0 0 5px #e50914' : 'none'
           }}
         >
           {draggedItem && dragOverItem === 'root' 
@@ -299,23 +315,42 @@ function TreeView({
       {/* Menu contextuel */}
       {contextMenu && (
         <div
+          className={isStrangerThings ? "stranger-things-context-menu" : ""}
           style={{
             position: 'fixed',
             top: contextMenu.y,
             left: contextMenu.x,
-            backgroundColor: 'white',
-            border: '1px solid #ccc',
+            backgroundColor: isStrangerThings ? '#1a0000' : 'white',
+            border: isStrangerThings ? '2px solid #e50914' : '1px solid #ccc',
             borderRadius: '0.25rem',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+            boxShadow: isStrangerThings ? '0 0 20px #e50914' : '0 2px 8px rgba(0,0,0,0.15)',
             zIndex: 1000,
-            minWidth: '150px'
+            minWidth: '150px',
+            color: isStrangerThings ? '#e50914' : 'inherit'
           }}
           onClick={(e) => e.stopPropagation()}
         >
           {contextMenu.item.type === 'folder' ? (
             <>
               <div
-                style={{ padding: '0.5rem 1rem', cursor: 'pointer', borderBottom: '1px solid #eee' }}
+                style={{ 
+                  padding: '0.5rem 1rem', 
+                  cursor: 'pointer', 
+                  borderBottom: isStrangerThings ? '1px solid #e50914' : '1px solid #eee',
+                  color: isStrangerThings ? '#e50914' : 'inherit'
+                }}
+                onMouseEnter={(e) => {
+                  if (isStrangerThings) {
+                    e.target.style.backgroundColor = '#0a0a0a';
+                    e.target.style.textShadow = '0 0 5px #00d4ff';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (isStrangerThings) {
+                    e.target.style.backgroundColor = 'transparent';
+                    e.target.style.textShadow = 'none';
+                  }
+                }}
                 onClick={() => {
                   if (onCreate) onCreate('file', contextMenu.item.id);
                   closeContextMenu();
@@ -324,7 +359,24 @@ function TreeView({
                 📄 Nouveau fichier
               </div>
               <div
-                style={{ padding: '0.5rem 1rem', cursor: 'pointer', borderBottom: '1px solid #eee' }}
+                style={{ 
+                  padding: '0.5rem 1rem', 
+                  cursor: 'pointer', 
+                  borderBottom: isStrangerThings ? '1px solid #e50914' : '1px solid #eee',
+                  color: isStrangerThings ? '#e50914' : 'inherit'
+                }}
+                onMouseEnter={(e) => {
+                  if (isStrangerThings) {
+                    e.target.style.backgroundColor = '#0a0a0a';
+                    e.target.style.textShadow = '0 0 5px #00d4ff';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (isStrangerThings) {
+                    e.target.style.backgroundColor = 'transparent';
+                    e.target.style.textShadow = 'none';
+                  }
+                }}
                 onClick={() => {
                   if (onCreate) onCreate('folder', contextMenu.item.id);
                   closeContextMenu();
@@ -335,7 +387,24 @@ function TreeView({
             </>
           ) : (
             <div
-              style={{ padding: '0.5rem 1rem', cursor: 'pointer', borderBottom: '1px solid #eee' }}
+              style={{ 
+                padding: '0.5rem 1rem', 
+                cursor: 'pointer', 
+                borderBottom: isStrangerThings ? '1px solid #e50914' : '1px solid #eee',
+                color: isStrangerThings ? '#e50914' : 'inherit'
+              }}
+              onMouseEnter={(e) => {
+                if (isStrangerThings) {
+                  e.target.style.backgroundColor = '#0a0a0a';
+                  e.target.style.textShadow = '0 0 5px #00d4ff';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (isStrangerThings) {
+                  e.target.style.backgroundColor = 'transparent';
+                  e.target.style.textShadow = 'none';
+                }
+              }}
               onClick={() => {
                 if (onSelect) onSelect(contextMenu.item);
                 closeContextMenu();
@@ -345,7 +414,24 @@ function TreeView({
             </div>
           )}
           <div
-            style={{ padding: '0.5rem 1rem', cursor: 'pointer', borderBottom: '1px solid #eee' }}
+            style={{ 
+              padding: '0.5rem 1rem', 
+              cursor: 'pointer', 
+              borderBottom: isStrangerThings ? '1px solid #e50914' : '1px solid #eee',
+              color: isStrangerThings ? '#e50914' : 'inherit'
+            }}
+            onMouseEnter={(e) => {
+              if (isStrangerThings) {
+                e.target.style.backgroundColor = '#0a0a0a';
+                e.target.style.textShadow = '0 0 5px #00d4ff';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (isStrangerThings) {
+                e.target.style.backgroundColor = 'transparent';
+                e.target.style.textShadow = 'none';
+              }
+            }}
             onClick={() => {
               if (onRename) onRename(contextMenu.item);
               closeContextMenu();
@@ -354,7 +440,23 @@ function TreeView({
             ✏️ Renommer
           </div>
           <div
-            style={{ padding: '0.5rem 1rem', cursor: 'pointer', color: '#dc3545' }}
+            style={{ 
+              padding: '0.5rem 1rem', 
+              cursor: 'pointer', 
+              color: isStrangerThings ? '#e50914' : '#dc3545'
+            }}
+            onMouseEnter={(e) => {
+              if (isStrangerThings) {
+                e.target.style.backgroundColor = '#0a0a0a';
+                e.target.style.textShadow = '0 0 5px #e50914';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (isStrangerThings) {
+                e.target.style.backgroundColor = 'transparent';
+                e.target.style.textShadow = 'none';
+              }
+            }}
             onClick={() => {
               if (onDelete) onDelete(contextMenu.item.id);
               closeContextMenu();

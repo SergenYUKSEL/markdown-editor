@@ -1,12 +1,13 @@
 // But : bouton réutilisable avec variantes
-// Props : variant (primary, secondary, danger), size (small, medium, large), onClick, disabled, children
+// Props : variant (primary, secondary, danger), size (small, medium, large), onClick, disabled, children, className
 function Button({ 
     children, 
     onClick, 
     variant = 'primary', 
     size = 'medium', 
     disabled = false,
-    type = 'button'
+    type = 'button',
+    className = ''
 }) {
     // Styles selon la variante
     const variantStyles = {
@@ -60,6 +61,7 @@ function Button({
             onClick={disabled ? undefined : onClick} 
             disabled={disabled}
             style={baseStyle}
+            className={className}
         >
             {children}
         </button>

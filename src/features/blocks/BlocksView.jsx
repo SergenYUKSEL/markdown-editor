@@ -1,13 +1,17 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import BlockList from "./BlockList";
 import BlockEditor from "./BlockEditor";
 import Button from "../../components/Button";
 import { importBlock, importBlocks } from "../../utils/importUtils";
 import { useDispatch } from "react-redux";
 import { importBlocks as importBlocksAction } from "../../store/slices/blocksSlice";
+import "../../styles/strangerThings.css";
 
 function BlocksView() {
   const dispatch = useDispatch();
+  const theme = useSelector((state) => state.ui.theme);
+  const isStrangerThings = theme === "strangerThings";
   const [showEditor, setShowEditor] = useState(false);
   const [editingBlock, setEditingBlock] = useState(null);
 
@@ -44,7 +48,13 @@ function BlocksView() {
   };
 
   return (
-    <div style={{ padding: "2rem" }}>
+    <div 
+      style={{ 
+        padding: "2rem",
+        backgroundColor: isStrangerThings ? "#0a0a0a" : "transparent",
+        minHeight: "100%"
+      }}
+    >
       <div
         style={{
           display: "flex",
@@ -53,7 +63,15 @@ function BlocksView() {
           marginBottom: "2rem",
         }}
       >
-        <h1 style={{ margin: 0 }}>Bibliothèque de blocs</h1>
+        <h1 
+          style={{ 
+            margin: 0,
+            color: isStrangerThings ? "#e50914" : "inherit",
+            textShadow: isStrangerThings ? "0 0 10px #e50914" : "none"
+          }}
+        >
+          Bibliothèque de blocs
+        </h1>
         <div style={{ display: "flex", gap: "0.5rem" }}>
           <input
             type="file"
@@ -65,13 +83,19 @@ function BlocksView() {
           <Button 
             variant="secondary" 
             size="small"
+            className={isStrangerThings ? "stranger-things-button" : ""}
             onClick={() => {
               document.getElementById("import-blocks-input")?.click();
             }}
           >
             📥 Importer
           </Button>
-          <Button onClick={handleCreate} variant="primary" size="small">
+          <Button 
+            onClick={handleCreate} 
+            variant="primary" 
+            size="small"
+            className={isStrangerThings ? "stranger-things-button" : ""}
+          >
             + Nouveau bloc
           </Button>
         </div>

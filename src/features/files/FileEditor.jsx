@@ -6,6 +6,7 @@ import Button from "../../components/Button";
 import { updateFileContent, saveCurrentFile } from "../../store/slices/filesSlice";
 import { exportMarkdownFile } from "../../utils/exportUtils";
 import Modal from "../../components/Modal";
+import "../../styles/strangerThings.css";
 
 function FileEditor() {
   const dispatch = useDispatch();
@@ -14,9 +15,12 @@ function FileEditor() {
   const tree = useSelector((state) => state.files.tree);
   const blocks = useSelector((state) => state.blocks.blocks);
   const images = useSelector((state) => state.images.images);
+  const theme = useSelector((state) => state.ui.theme);
   const [viewMode, setViewMode] = useState("split"); // 'edit', 'preview', 'split'
   const [showBlockModal, setShowBlockModal] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
+  
+  const isStrangerThings = theme === "strangerThings";
 
   // Trouver le fichier actuel
   const currentFile = currentFileId
@@ -174,6 +178,7 @@ function FileEditor() {
       >
         {(viewMode === "edit" || viewMode === "split") && (
           <div
+            className={isStrangerThings ? "stranger-things-editor" : ""}
             style={{
               width: viewMode === "split" ? "50%" : "100%",
               borderRight: viewMode === "split" ? "1px solid #ccc" : "none",
@@ -190,6 +195,7 @@ function FileEditor() {
         )}
         {(viewMode === "preview" || viewMode === "split") && (
           <div
+            className={isStrangerThings ? "stranger-things-preview" : ""}
             style={{
               width: viewMode === "split" ? "50%" : "100%",
               overflow: "auto",
