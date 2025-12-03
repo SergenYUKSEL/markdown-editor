@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout.jsx'
-import FilesView from './views/FilesView.jsx'
-import BlocksView from './views/BlocksView.jsx'
-import ImagesView from './views/ImagesView.jsx'
+import FilesView from './features/files/FilesView.jsx'
+import BlocksView from './features/blocks/BlocksView.jsx'
+import ImagesView from './features/images/ImagesView.jsx'
 
 function App() {
   return (
