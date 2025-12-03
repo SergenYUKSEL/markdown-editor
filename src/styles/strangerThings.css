@@ -1,10 +1,58 @@
 /* Thème Stranger Things */
 
 /* Styles globaux pour le thème Stranger Things */
-body.stranger-things-theme {
+body.stranger-things-theme,
+body.stranger-things-theme #root,
+body.stranger-things-theme #root * {
   background-color: #0a0a0a;
   color: #e50914;
-  font-family: 'Courier New', monospace;
+  font-family: 'Orbitron', 'Russo One', 'Courier New', monospace !important;
+}
+
+body.stranger-things-theme #root {
+  background-color: transparent;
+}
+
+/* Application de la police à tous les éléments */
+body.stranger-things-theme,
+body.stranger-things-theme *,
+body.stranger-things-theme div,
+body.stranger-things-theme span,
+body.stranger-things-theme p,
+body.stranger-things-theme a,
+body.stranger-things-theme li,
+body.stranger-things-theme ul,
+body.stranger-things-theme ol {
+  font-family: 'Orbitron', 'Russo One', 'Courier New', monospace !important;
+}
+
+/* Titres avec police plus bold et stylisée */
+body.stranger-things-theme h1,
+body.stranger-things-theme h2,
+body.stranger-things-theme h3,
+body.stranger-things-theme h4,
+body.stranger-things-theme h5,
+body.stranger-things-theme h6 {
+  font-family: 'Russo One', 'Orbitron', 'Courier New', monospace !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Inputs et textareas */
+body.stranger-things-theme input,
+body.stranger-things-theme textarea,
+body.stranger-things-theme select,
+body.stranger-things-theme button,
+body.stranger-things-theme input *,
+body.stranger-things-theme textarea * {
+  font-family: 'Orbitron', 'Russo One', 'Courier New', monospace !important;
+}
+
+/* Boutons avec style spécial */
+body.stranger-things-theme button {
+  letter-spacing: 0.05em;
+  font-weight: 700;
 }
 
 /* Éditeur Markdown inversé à 180 degrés */

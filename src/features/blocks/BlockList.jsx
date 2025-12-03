@@ -29,8 +29,8 @@ function BlockList({ onEdit }) {
   };
 
   return (
-    <div>
-      <div style={{ marginBottom: "1rem", display: "flex", gap: "0.5rem" }}>
+    <div style={{ width: "100%", boxSizing: "border-box" }}>
+      <div style={{ marginBottom: "1rem", display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
         <Button 
           onClick={handleExportAll} 
           variant="secondary" 
@@ -56,8 +56,10 @@ function BlockList({ onEdit }) {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
             gap: "1rem",
+            width: "100%",
+            boxSizing: "border-box"
           }}
         >
           {blocks.map((block) => (
@@ -70,6 +72,12 @@ function BlockList({ onEdit }) {
                 backgroundColor: isStrangerThings ? "#1a0000" : "#fff",
                 color: isStrangerThings ? "#e50914" : "inherit",
                 boxShadow: isStrangerThings ? "0 0 10px rgba(229, 9, 20, 0.3)" : "none",
+                width: "100%",
+                maxWidth: "100%",
+                boxSizing: "border-box",
+                overflow: "hidden",
+                wordWrap: "break-word",
+                overflowWrap: "break-word",
               }}
             >
               <div
@@ -78,6 +86,8 @@ function BlockList({ onEdit }) {
                   justifyContent: "space-between",
                   alignItems: "center",
                   marginBottom: "0.5rem",
+                  gap: "0.5rem",
+                  flexWrap: "wrap",
                 }}
               >
                 <h3 
@@ -85,7 +95,11 @@ function BlockList({ onEdit }) {
                     margin: 0, 
                     fontSize: "1.125rem",
                     color: isStrangerThings ? "#00d4ff" : "inherit",
-                    textShadow: isStrangerThings ? "0 0 5px #00d4ff" : "none"
+                    textShadow: isStrangerThings ? "0 0 5px #00d4ff" : "none",
+                    flex: "1 1 auto",
+                    minWidth: 0,
+                    wordBreak: "break-word",
+                    overflowWrap: "break-word",
                   }}
                 >
                   {block.name}
@@ -99,7 +113,9 @@ function BlockList({ onEdit }) {
                       padding: "0.25rem 0.5rem",
                       borderRadius: "0.25rem",
                       fontSize: "0.875rem",
-                      textShadow: isStrangerThings ? "0 0 5px #e50914" : "none"
+                      textShadow: isStrangerThings ? "0 0 5px #e50914" : "none",
+                      flexShrink: 0,
+                      whiteSpace: "nowrap",
                     }}
                   >
                     {block.shortcut}
@@ -127,17 +143,22 @@ function BlockList({ onEdit }) {
                   fontSize: "0.875rem",
                   color: isStrangerThings ? "#e50914" : "inherit",
                   border: isStrangerThings ? "1px solid #e50914" : "none",
+                  wordBreak: "break-word",
+                  overflowWrap: "break-word",
+                  width: "100%",
+                  boxSizing: "border-box",
                 }}
               >
                 {block.content.substring(0, 200)}
                 {block.content.length > 200 && "..."}
               </div>
-              <div style={{ display: "flex", gap: "0.5rem" }}>
+              <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", width: "100%" }}>
                 <Button
                   onClick={() => setPreviewBlock(block)}
                   variant="secondary"
                   size="small"
                   className={isStrangerThings ? "stranger-things-button" : ""}
+                  style={{ flex: "1 1 auto", minWidth: "fit-content" }}
                 >
                   👁️ Prévisualiser
                 </Button>
@@ -147,6 +168,7 @@ function BlockList({ onEdit }) {
                     variant="secondary"
                     size="small"
                     className={isStrangerThings ? "stranger-things-button" : ""}
+                    style={{ flex: "1 1 auto", minWidth: "fit-content" }}
                   >
                     ✏️ Modifier
                   </Button>
@@ -156,6 +178,7 @@ function BlockList({ onEdit }) {
                   variant="secondary"
                   size="small"
                   className={isStrangerThings ? "stranger-things-button" : ""}
+                  style={{ flex: "1 1 auto", minWidth: "fit-content" }}
                 >
                   📥 Exporter
                 </Button>
@@ -164,6 +187,7 @@ function BlockList({ onEdit }) {
                   variant="danger"
                   size="small"
                   className={isStrangerThings ? "stranger-things-button" : ""}
+                  style={{ flex: "1 1 auto", minWidth: "fit-content" }}
                 >
                   🗑️ Supprimer
                 </Button>

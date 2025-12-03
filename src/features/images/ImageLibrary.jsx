@@ -62,8 +62,10 @@ function ImageLibrary() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
           gap: "1rem",
+          width: "100%",
+          boxSizing: "border-box"
         }}
       >
         {images.map((image) => (

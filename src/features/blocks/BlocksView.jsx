@@ -52,7 +52,10 @@ function BlocksView() {
       style={{ 
         padding: "2rem",
         backgroundColor: isStrangerThings ? "#0a0a0a" : "transparent",
-        minHeight: "100%"
+        minHeight: "100%",
+        height: "100%",
+        overflow: "auto",
+        boxSizing: "border-box"
       }}
     >
       <div
@@ -61,18 +64,22 @@ function BlocksView() {
           justifyContent: "space-between",
           alignItems: "center",
           marginBottom: "2rem",
+          flexWrap: "wrap",
+          gap: "1rem"
         }}
       >
         <h1 
           style={{ 
             margin: 0,
             color: isStrangerThings ? "#e50914" : "inherit",
-            textShadow: isStrangerThings ? "0 0 10px #e50914" : "none"
+            textShadow: isStrangerThings ? "0 0 10px #e50914" : "none",
+            flex: "1 1 auto",
+            minWidth: "200px"
           }}
         >
           Bibliothèque de blocs
         </h1>
-        <div style={{ display: "flex", gap: "0.5rem" }}>
+        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
           <input
             type="file"
             accept=".part.mdlc,.parts.mdlc"

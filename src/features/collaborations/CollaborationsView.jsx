@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setTheme, setStrangerThingsMusic } from "../../store/slices/uiSlice";
 import Button from "../../components/Button";
-import { useEffect } from "react";
 import "../../styles/strangerThings.css";
 
 const THEMES = {
@@ -12,15 +11,6 @@ const THEMES = {
       background: "#ffffff",
       text: "#333333",
       primary: "#007bff",
-    },
-  },
-  dark: {
-    name: "Sombre",
-    description: "Thème sombre pour les yeux",
-    colors: {
-      background: "#1a1a1a",
-      text: "#ffffff",
-      primary: "#4a9eff",
     },
   },
   strangerThings: {
@@ -41,20 +31,7 @@ function CollaborationsView() {
   const currentTheme = useSelector((state) => state.ui.theme);
   const musicPlaying = useSelector((state) => state.ui.strangerThingsMusicPlaying);
 
-  // Appliquer le thème au body
-  useEffect(() => {
-    if (currentTheme === "strangerThings") {
-      document.body.classList.add("stranger-things-theme");
-    } else {
-      document.body.classList.remove("stranger-things-theme");
-    }
-
-    return () => {
-      document.body.classList.remove("stranger-things-theme");
-    };
-  }, [currentTheme]);
-
-  // La musique est gérée globalement par MusicPlayer dans Layout
+  // Le thème est géré globalement par Layout.jsx
 
   const handleThemeChange = (themeName) => {
     dispatch(setTheme(themeName));
@@ -72,7 +49,14 @@ function CollaborationsView() {
   };
 
   return (
-    <div style={{ padding: "2rem" }}>
+    <div 
+      style={{ 
+        padding: "2rem",
+        height: "100%",
+        overflow: "auto",
+        boxSizing: "border-box"
+      }}
+    >
       <h1 style={{ marginBottom: "2rem" }}>Collaborations - Thèmes</h1>
       
       <div style={{ marginBottom: "2rem" }}>
@@ -114,8 +98,10 @@ function CollaborationsView() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
           gap: "1.5rem",
+          width: "100%",
+          boxSizing: "border-box"
         }}
       >
         {Object.entries(THEMES).map(([key, theme]) => (
