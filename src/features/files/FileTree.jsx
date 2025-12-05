@@ -3,17 +3,19 @@ import TreeView from "../../components/TreeView";
 import {
   createItem,
   deleteItem,
-  renameItem,
   moveItem,
   openFile,
 } from "../../store/slices/filesSlice";
 import { useState } from "react";
 import Modal from "../../components/Modal";
 import Button from "../../components/Button";
+import "../../styles/strangerThings.css";
 
 function FileTree() {
   const dispatch = useDispatch();
   const tree = useSelector((state) => state.files.tree);
+  const theme = useSelector((state) => state.ui.theme);
+  const isStrangerThings = theme === "strangerThings";
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [createType, setCreateType] = useState("file");
   const [createParentId, setCreateParentId] = useState("root");
@@ -86,6 +88,7 @@ function FileTree() {
           onClick={() => handleCreate("file", "root")}
           variant="primary"
           size="small"
+          className={isStrangerThings ? "stranger-things-button" : ""}
         >
           + Fichier
         </Button>
@@ -94,6 +97,7 @@ function FileTree() {
           variant="secondary"
           size="small"
           style={{ marginLeft: "0.5rem" }}
+          className={isStrangerThings ? "stranger-things-button" : ""}
         >
           + Dossier
         </Button>
@@ -108,7 +112,6 @@ function FileTree() {
         onMove={handleMove}
       />
 
-      {/* Modal de création */}
       <Modal
         isOpen={showCreateModal}
         onClose={() => setShowCreateModal(false)}
@@ -147,7 +150,6 @@ function FileTree() {
         </div>
       </Modal>
 
-      {/* Modal de renommage */}
       <Modal
         isOpen={showRenameModal}
         onClose={() => setShowRenameModal(false)}

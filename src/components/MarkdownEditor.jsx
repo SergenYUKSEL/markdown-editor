@@ -1,8 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { matchesShortcut, isMac } from '../utils/keyboardUtils';
 
-// But : éditeur de texte pour Markdown
-// Props : value, onChange, placeholder, onInsertBlock, onInsertImage, blocks
 function MarkdownEditor({ 
   value = '', 
   onChange, 
@@ -13,14 +11,11 @@ function MarkdownEditor({
 }) {
   const textareaRef = useRef(null);
 
-  // Gestion des raccourcis clavier pour les blocs
   useEffect(() => {
     const handleKeyDown = (e) => {
-      // Vérifier d'abord les raccourcis personnalisés des blocs
       for (const block of blocks) {
         if (block.shortcut && matchesShortcut(e, block.shortcut)) {
           e.preventDefault();
-          // Insérer directement le bloc
           const placeholder = `{{block(${block.id})}}`;
           const textarea = textareaRef.current;
           if (textarea) {
@@ -32,7 +27,6 @@ function MarkdownEditor({
               onChange({ target: { value: newValue } });
             }
 
-            // Repositionner le curseur
             setTimeout(() => {
               textarea.focus();
               const newPosition = start + placeholder.length;
@@ -43,7 +37,6 @@ function MarkdownEditor({
         }
       }
 
-      // Raccourci par défaut pour ouvrir la liste de blocs (Ctrl+Shift+B ou Cmd+Shift+B)
       const mac = isMac();
       const modifierKey = mac ? e.metaKey : e.ctrlKey;
       
@@ -62,7 +55,6 @@ function MarkdownEditor({
     }
   }, [onInsertBlock, blocks, value, onChange]);
 
-  // Fonction pour insérer du texte à la position du curseur
   const insertText = (textToInsert) => {
     const textarea = textareaRef.current;
     if (!textarea) return;
@@ -75,40 +67,32 @@ function MarkdownEditor({
       onChange({ target: { value: newValue } });
     }
 
-    // Repositionner le curseur après l'insertion
     setTimeout(() => {
       textarea.focus();
       textarea.setSelectionRange(start + textToInsert.length, start + textToInsert.length);
     }, 0);
   };
 
-  // Fonction pour insérer un bloc
   const handleInsertBlock = (block) => {
     if (!block) {
-      // Si pas de bloc fourni, appeler la callback pour ouvrir la sélection
       if (onInsertBlock) onInsertBlock();
       return;
     }
     
-    // Insérer le placeholder du bloc
     const placeholder = `{{block(${block.id})}}`;
     insertText(placeholder);
   };
 
-  // Fonction pour insérer une image
   const handleInsertImage = (image) => {
     if (!image) {
-      // Si pas d'image fournie, appeler la callback pour ouvrir la sélection
       if (onInsertImage) onInsertImage();
       return;
     }
     
-    // Insérer le placeholder de l'image
     const placeholder = `{{image(${image.id})}}`;
     insertText(placeholder);
   };
 
-  // Exposer les fonctions d'insertion via ref (optionnel, pour usage externe)
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.insertBlock = handleInsertBlock;
@@ -118,8 +102,7 @@ function MarkdownEditor({
 
   return (
     <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
-      {/* Barre d'outils simple */}
-      <div style={{ 
+      <div style={{
         padding: '0.5rem', 
         borderBottom: '1px solid #ccc', 
         display: 'flex', 

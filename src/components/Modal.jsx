@@ -1,9 +1,6 @@
 import { useEffect } from 'react';
 
-// But : modale réutilisable
-// Props : isOpen, onClose, title, children, size (small, medium, large)
 function Modal({ isOpen, onClose, title, children, size = 'medium' }) {
-    // Gestion de la touche ESC pour fermer
     useEffect(() => {
         if (!isOpen) return;
 
@@ -17,7 +14,6 @@ function Modal({ isOpen, onClose, title, children, size = 'medium' }) {
         return () => document.removeEventListener('keydown', handleEscape);
     }, [isOpen, onClose]);
 
-    // Tailles de modale
     const sizeStyles = {
         small: { width: '400px', maxWidth: '90%' },
         medium: { width: '600px', maxWidth: '90%' },
@@ -40,7 +36,7 @@ function Modal({ isOpen, onClose, title, children, size = 'medium' }) {
                 justifyContent: 'center',
                 zIndex: 1000
             }}
-            onClick={onClose} // Fermer en cliquant sur l'overlay
+            onClick={onClose}
         >
             <div 
                 style={{
@@ -53,7 +49,7 @@ function Modal({ isOpen, onClose, title, children, size = 'medium' }) {
                     maxHeight: '90vh',
                     overflow: 'auto'
                 }}
-                onClick={(e) => e.stopPropagation()} // Empêcher la fermeture en cliquant dans la modale
+                onClick={(e) => e.stopPropagation()}
             >
                 {title && (
                     <div style={{ 

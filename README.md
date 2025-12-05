@@ -1,16 +1,87 @@
-# React + Vite
+# Éditeur Markdown
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Application web pour gérer et éditer des documents Markdown avec prévisualisation en temps réel.
 
-Currently, two official plugins are available:
+## Description
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Éditeur Markdown qui permet de créer, organiser et éditer des documents avec prévisualisation HTML. Inclut un système de blocs réutilisables et une bibliothèque d'images.
 
-## React Compiler
+## Fonctionnalités
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**Gestion de fichiers**
+- Organisation en arborescence avec dossiers
+- Création, modification, suppression et renommage
+- Déplacement par glisser-déposer
+- Import et export de fichiers .md
 
-## Expanding the ESLint configuration
+**Édition**
+- Éditeur Markdown avec coloration syntaxique
+- Prévisualisation HTML en temps réel
+- Insertion d'images depuis la bibliothèque
+- Insertion de blocs personnalisés via raccourcis clavier
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**Blocs personnalisés**
+- Création de blocs HTML/Markdown réutilisables
+- Bibliothèque de blocs avec gestion complète
+- Raccourcis clavier pour insertion rapide
+- Import/export de blocs (.part.mdlc pour un bloc, .parts.mdlc pour plusieurs)
+
+**Bibliothèque d'images**
+- Import d'images par bouton ou glisser-déposer
+- Stockage en base64
+- Gestion des images (renommage, suppression)
+- Insertion dans les documents
+- Import/export (.img.mdlc pour une image, .imgs.mdlc pour plusieurs)
+
+**Collaborations**
+- Interface dédiée pour le travail collaboratif
+
+## Installation et lancement
+
+Prérequis : Node.js version 16 ou supérieure
+
+Installation :
+```bash
+npm install
+npm run dev
+```
+
+Lancement en développement : `npm run dev`
+
+L'application sera accessible à l'adresse : http://localhost:5173
+
+## Technologies
+
+- React 19
+- Vite
+- Redux Toolkit
+- React Router
+- Marked (conversion Markdown vers HTML)
+- localStorage/IndexedDB pour la persistance
+
+## Structure
+
+```
+src/
+├── components/          # Composants réutilisables
+│   ├── Button.jsx
+│   ├── Layout.jsx
+│   ├── MarkdownEditor.jsx
+│   ├── MarkdownPreview.jsx
+│   ├── Modal.jsx
+│   ├── MusicPlayer.jsx
+│   ├── Sidebar.jsx
+│   └── TreeView.jsx
+├── features/           # Fonctionnalités par domaine
+│   ├── blocks/         # Gestion des blocs
+│   ├── collaborations/ # Collaborations
+│   ├── files/          # Gestion des fichiers
+│   └── images/         # Bibliothèque d'images
+├── store/              # Configuration Redux
+│   ├── slices/         # Slices Redux
+│   └── store.js
+├── styles/             # Styles CSS
+├── utils/              # Fonctions utilitaires
+├── App.jsx             # Composant racine
+└── main.jsx            # Point d'entrée
+```

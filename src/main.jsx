@@ -7,7 +7,6 @@ import { loadPersistedData } from './store/persistence.js'
 import './index.css'
 import App from './App.jsx'
 
-// Composant pour charger les données au démarrage
 function AppWithPersistence() {
   const dispatch = useDispatch();
 

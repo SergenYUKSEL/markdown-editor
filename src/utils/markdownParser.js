@@ -1,10 +1,3 @@
-// But : parsing et transformation du Markdown en HTML
-// Fonctions :
-// - parseMarkdown(content) : conversion Markdown → HTML
-// - replaceBlockPlaceholders(content, blocks) : remplacer les références de blocs par leur contenu
-// - replaceImagePlaceholders(content, images) : remplacer les références d'images par les balises <img>
-// - extractBlockReferences(content) : extraire les références de blocs dans le contenu
-// Usage : utilisé pour la prévisualisation du Markdown
 import { marked } from "marked";
 
 function parseMarkdown(markdown) {
@@ -27,7 +20,6 @@ function replaceImagePlaceholders(content, images) {
     const image = images.find((image) => image.id === p1);
     if (!image) return "";
 
-    // Si l'image a une URL base64, créer une balise img
     if (image.data) {
       return `![${image.name || "image"}](${image.data})`;
     }

@@ -1,0 +1,187 @@
+body.stranger-things-theme,
+body.stranger-things-theme #root,
+body.stranger-things-theme #root * {
+  background-color: #0a0a0a;
+  color: #e50914;
+  font-family: 'Orbitron', 'Russo One', 'Courier New', monospace !important;
+}
+
+body.stranger-things-theme #root {
+  background-color: transparent;
+}
+
+body.stranger-things-theme,
+body.stranger-things-theme *,
+body.stranger-things-theme div,
+body.stranger-things-theme span,
+body.stranger-things-theme p,
+body.stranger-things-theme a,
+body.stranger-things-theme li,
+body.stranger-things-theme ul,
+body.stranger-things-theme ol {
+  font-family: 'Orbitron', 'Russo One', 'Courier New', monospace !important;
+}
+
+body.stranger-things-theme h1,
+body.stranger-things-theme h2,
+body.stranger-things-theme h3,
+body.stranger-things-theme h4,
+body.stranger-things-theme h5,
+body.stranger-things-theme h6 {
+  font-family: 'Russo One', 'Orbitron', 'Courier New', monospace !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+body.stranger-things-theme input,
+body.stranger-things-theme textarea,
+body.stranger-things-theme select,
+body.stranger-things-theme button,
+body.stranger-things-theme input *,
+body.stranger-things-theme textarea * {
+  font-family: 'Orbitron', 'Russo One', 'Courier New', monospace !important;
+}
+
+body.stranger-things-theme button {
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+
+.stranger-things-editor {
+  transform: rotate(180deg);
+  transform-origin: center;
+  width: 100%;
+  height: 100%;
+}
+
+.stranger-things-editor > div {
+  transform: rotate(180deg);
+  transform-origin: center;
+}
+
+.stranger-things-editor textarea {
+  background-color: #0a0a0a !important;
+  color: #e50914 !important;
+  border: 2px solid #e50914 !important;
+  font-family: 'Courier New', monospace !important;
+  text-shadow: 0 0 10px #e50914;
+  transform: rotate(180deg);
+  direction: rtl;
+}
+
+.stranger-things-editor textarea::placeholder {
+  color: #e50914 !important;
+  opacity: 0.5;
+}
+
+.stranger-things-preview {
+  background-color: #0a0a0a !important;
+  color: #e50914 !important;
+  border: 2px solid #e50914 !important;
+  transform: rotate(180deg);
+  transform-origin: center;
+  width: 100%;
+  height: 100%;
+}
+
+.stranger-things-preview > div {
+  transform: rotate(180deg);
+  transform-origin: center;
+  direction: rtl;
+}
+
+.stranger-things-preview h1,
+.stranger-things-preview h2,
+.stranger-things-preview h3 {
+  color: #00d4ff !important;
+  text-shadow: 0 0 10px #00d4ff;
+  border-bottom-color: #e50914 !important;
+}
+
+.stranger-things-preview code {
+  background-color: #1a0000 !important;
+  color: #ff6b00 !important;
+  border: 1px solid #e50914 !important;
+  text-shadow: 0 0 5px #ff6b00;
+}
+
+.stranger-things-preview a {
+  color: #00d4ff !important;
+  text-shadow: 0 0 5px #00d4ff;
+}
+
+.stranger-things-sidebar {
+  background-color: #1a0000 !important;
+  border-right: 2px solid #e50914 !important;
+}
+
+.stranger-things-sidebar a {
+  color: #e50914 !important;
+  text-shadow: 0 0 5px #e50914;
+}
+
+.stranger-things-sidebar a:hover {
+  color: #00d4ff !important;
+  text-shadow: 0 0 10px #00d4ff;
+}
+
+.stranger-things-button {
+  background-color: #e50914 !important;
+  color: #0a0a0a !important;
+  border: 2px solid #00d4ff !important;
+  text-shadow: none !important;
+  box-shadow: 0 0 10px #e50914;
+}
+
+.stranger-things-button:hover {
+  background-color: #00d4ff !important;
+  color: #0a0a0a !important;
+  box-shadow: 0 0 15px #00d4ff;
+}
+
+.stranger-things-tree {
+  background-color: #0a0a0a !important;
+  border: 2px solid #e50914 !important;
+  color: #e50914 !important;
+}
+
+.stranger-things-tree span {
+  color: #e50914 !important;
+  text-shadow: 0 0 5px #e50914;
+}
+
+.stranger-things-context-menu {
+  background-color: #1a0000 !important;
+  border: 2px solid #e50914 !important;
+  box-shadow: 0 0 20px #e50914 !important;
+  color: #e50914 !important;
+}
+
+.stranger-things-modal {
+  background-color: #1a0000 !important;
+  border: 3px solid #e50914 !important;
+  box-shadow: 0 0 20px #e50914;
+}
+
+.stranger-things-modal h2 {
+  color: #00d4ff !important;
+  text-shadow: 0 0 10px #00d4ff;
+}
+
+@keyframes glitch {
+  0% {
+    text-shadow: 2px 0 #e50914, -2px 0 #00d4ff;
+  }
+  50% {
+    text-shadow: -2px 0 #e50914, 2px 0 #00d4ff;
+  }
+  100% {
+    text-shadow: 2px 0 #e50914, -2px 0 #00d4ff;
+  }
+}
+
+.stranger-things-title {
+  animation: glitch 0.3s infinite;
+}
+

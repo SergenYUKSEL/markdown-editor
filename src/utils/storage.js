@@ -1,14 +1,3 @@
-// But : persistance des données (localStorage)
-//Fonctions :
-//- saveFiles(tree) : sauvegarder l’arborescence
-//- loadFiles() : charger l’arborescence
-//- saveBlocks(blocks) : sauvegarder les blocs
-//- loadBlocks() : charger les blocs
-//- saveImages(images) : sauvegarder les images
-//- loadImages() : charger les images
-//- clearAll() : tout effacer
-//Usage : utilisé pour la persistance des données
-
 function saveFiles(tree) {
   localStorage.setItem("files", JSON.stringify(tree));
 }

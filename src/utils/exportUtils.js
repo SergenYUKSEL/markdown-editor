@@ -1,12 +1,3 @@
-//But : export de fichiers
-//Fonctions :
-//- exportMarkdownFile(content, filename) : télécharger un fichier .md
-//- exportBlock(block) : exporter un bloc en .part.mdlc (JSON)
-//- exportBlocks(blocks) : exporter plusieurs blocs en .parts.mdlc (JSON array)
-//- exportAllFiles(tree) : exporter toute l’arborescence (ZIP)
-//Format .mdlc : JSON avec { name, content, shortcut, type }
-//Usage : utilisé pour l'export des fichiers
-
 function exportMarkdownFile(content, filename = "document.md") {
   try {
     if (!content) {
@@ -15,7 +6,6 @@ function exportMarkdownFile(content, filename = "document.md") {
       return;
     }
 
-    // Nettoyer le nom de fichier (enlever les caractères invalides)
     const cleanFilename =
       filename.replace(/[<>:"/\\|?*]/g, "_").trim() || "document";
 
@@ -33,7 +23,6 @@ function exportMarkdownFile(content, filename = "document.md") {
     document.body.appendChild(a);
     a.click();
 
-    // Attendre un peu avant de nettoyer
     setTimeout(() => {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
@@ -106,7 +95,6 @@ function exportBlocks(blocks) {
   }
 }
 
-// Fonction simplifiée sans JSZip - exporte un JSON contenant tout
 function exportAllFiles(tree, blocks = [], images = []) {
   const allData = {
     tree,

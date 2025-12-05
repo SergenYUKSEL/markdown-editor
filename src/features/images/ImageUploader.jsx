@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../components/Modal";
 import Button from "../../components/Button";
 import { addImage } from "../../store/slices/imagesSlice";
+import "../../styles/strangerThings.css";
 
 function ImageUploader({ isOpen, onClose }) {
   const dispatch = useDispatch();
+  const theme = useSelector((state) => state.ui.theme);
+  const isStrangerThings = theme === "strangerThings";
   const [dragActive, setDragActive] = useState(false);
   const [error, setError] = useState("");
   const [preview, setPreview] = useState(null);
@@ -39,13 +42,11 @@ function ImageUploader({ isOpen, onClose }) {
   };
 
   const handleFile = (file) => {
-    // Vérifier le type de fichier
     if (!file.type.startsWith("image/")) {
       setError("Le fichier doit être une image");
       return;
     }
 
-    // Vérifier la taille (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       setError("L'image est trop grande (max 5MB)");
       return;
@@ -54,7 +55,6 @@ function ImageUploader({ isOpen, onClose }) {
     setError("");
     setImageName(file.name);
 
-    // Lire le fichier en base64
     const reader = new FileReader();
     reader.onload = (e) => {
       const base64 = e.target.result;
@@ -85,7 +85,6 @@ function ImageUploader({ isOpen, onClose }) {
       })
     );
 
-    // Réinitialiser
     setPreview(null);
     setImageData(null);
     setImageName("");
@@ -108,10 +107,12 @@ function ImageUploader({ isOpen, onClose }) {
           <div
             style={{
               padding: "0.75rem",
-              backgroundColor: "#fee",
-              color: "#c33",
+              backgroundColor: isStrangerThings ? "#1a0000" : "#fee",
+              color: isStrangerThings ? "#e50914" : "#c33",
+              border: isStrangerThings ? "1px solid #e50914" : "none",
               borderRadius: "0.25rem",
               marginBottom: "1rem",
+              textShadow: isStrangerThings ? "0 0 5px #e50914" : "none"
             }}
           >
             {error}
@@ -125,16 +126,33 @@ function ImageUploader({ isOpen, onClose }) {
             onDragOver={handleDrag}
             onDrop={handleDrop}
             style={{
-              border: `2px dashed ${dragActive ? "#007bff" : "#ccc"}`,
+              border: `2px dashed ${
+                dragActive 
+                  ? (isStrangerThings ? "#00d4ff" : "#007bff")
+                  : (isStrangerThings ? "#e50914" : "#ccc")
+              }`,
               borderRadius: "0.5rem",
               padding: "2rem",
               textAlign: "center",
-              backgroundColor: dragActive ? "#f0f8ff" : "#fafafa",
+              backgroundColor: dragActive 
+                ? (isStrangerThings ? "#1a0000" : "#f0f8ff")
+                : (isStrangerThings ? "#0a0a0a" : "#fafafa"),
               marginBottom: "1rem",
+              color: isStrangerThings ? "#e50914" : "inherit",
+              boxShadow: isStrangerThings && dragActive ? "0 0 15px #00d4ff" : "none"
             }}
           >
-            <p>Glissez-déposez une image ici</p>
-            <p style={{ color: "#666", fontSize: "0.875rem" }}>ou</p>
+            <p style={{ color: isStrangerThings ? "#e50914" : "inherit" }}>
+              Glissez-déposez une image ici
+            </p>
+            <p 
+              style={{ 
+                color: isStrangerThings ? "#00d4ff" : "#666", 
+                fontSize: "0.875rem" 
+              }}
+            >
+              ou
+            </p>
             <input
               type="file"
               accept="image/*"
@@ -145,6 +163,7 @@ function ImageUploader({ isOpen, onClose }) {
             <Button 
               variant="primary" 
               size="small"
+              className={isStrangerThings ? "stranger-things-button" : ""}
               onClick={() => {
                 document.getElementById("image-upload-input")?.click();
               }}
@@ -168,7 +187,13 @@ function ImageUploader({ isOpen, onClose }) {
               />
             </div>
             <div style={{ marginBottom: "1rem" }}>
-              <label style={{ display: "block", marginBottom: "0.5rem" }}>
+              <label 
+                style={{ 
+                  display: "block", 
+                  marginBottom: "0.5rem",
+                  color: isStrangerThings ? "#e50914" : "inherit"
+                }}
+              >
                 Nom de l'image *
               </label>
               <input
@@ -178,8 +203,10 @@ function ImageUploader({ isOpen, onClose }) {
                 style={{
                   width: "100%",
                   padding: "0.5rem",
-                  border: "1px solid #ccc",
+                  border: isStrangerThings ? "2px solid #e50914" : "1px solid #ccc",
                   borderRadius: "0.25rem",
+                  backgroundColor: isStrangerThings ? "#0a0a0a" : "white",
+                  color: isStrangerThings ? "#e50914" : "inherit",
                 }}
                 placeholder="Nom de l'image"
                 autoFocus
@@ -193,10 +220,15 @@ function ImageUploader({ isOpen, onClose }) {
                   setImageName("");
                 }}
                 variant="secondary"
+                className={isStrangerThings ? "stranger-things-button" : ""}
               >
                 Changer d'image
               </Button>
-              <Button onClick={handleSubmit} variant="primary">
+              <Button 
+                onClick={handleSubmit} 
+                variant="primary"
+                className={isStrangerThings ? "stranger-things-button" : ""}
+              >
                 Ajouter
               </Button>
             </div>

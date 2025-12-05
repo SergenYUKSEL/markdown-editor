@@ -1,19 +1,21 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../components/Modal";
 import Button from "../../components/Button";
 import { addBlock, updateBlock } from "../../store/slices/blocksSlice";
 import { SHORTCUT_PRESETS, getShortcutValue, formatShortcut, isMac } from "../../utils/keyboardUtils";
+import "../../styles/strangerThings.css";
 
 function BlockEditor({ isOpen, onClose, block = null }) {
   const dispatch = useDispatch();
+  const theme = useSelector((state) => state.ui.theme);
+  const isStrangerThings = theme === "strangerThings";
   const [name, setName] = useState("");
   const [content, setContent] = useState("");
   const [shortcut, setShortcut] = useState("");
   const [type, setType] = useState("markdown");
   const [error, setError] = useState("");
 
-  // Initialiser les champs si on édite un bloc existant
   useEffect(() => {
     if (block) {
       setName(block.name || "");
@@ -21,7 +23,6 @@ function BlockEditor({ isOpen, onClose, block = null }) {
       setShortcut(block.shortcut || "");
       setType(block.type || "markdown");
     } else {
-      // Réinitialiser pour un nouveau bloc
       setName("");
       setContent("");
       setShortcut("");
@@ -31,7 +32,6 @@ function BlockEditor({ isOpen, onClose, block = null }) {
   }, [block, isOpen]);
 
   const handleSubmit = () => {
-    // Validation
     if (!name.trim()) {
       setError("Le nom est requis");
       return;
@@ -43,7 +43,6 @@ function BlockEditor({ isOpen, onClose, block = null }) {
 
     try {
       if (block) {
-        // Mise à jour
         dispatch(
           updateBlock({
             id: block.id,
@@ -54,7 +53,6 @@ function BlockEditor({ isOpen, onClose, block = null }) {
           })
         );
       } else {
-        // Création
         dispatch(
           addBlock({
             name: name.trim(),
@@ -82,10 +80,12 @@ function BlockEditor({ isOpen, onClose, block = null }) {
           <div
             style={{
               padding: "0.75rem",
-              backgroundColor: "#fee",
-              color: "#c33",
+              backgroundColor: isStrangerThings ? "#1a0000" : "#fee",
+              color: isStrangerThings ? "#e50914" : "#c33",
+              border: isStrangerThings ? "1px solid #e50914" : "none",
               borderRadius: "0.25rem",
               marginBottom: "1rem",
+              textShadow: isStrangerThings ? "0 0 5px #e50914" : "none"
             }}
           >
             {error}
@@ -93,7 +93,13 @@ function BlockEditor({ isOpen, onClose, block = null }) {
         )}
 
         <div style={{ marginBottom: "1rem" }}>
-          <label style={{ display: "block", marginBottom: "0.5rem" }}>
+          <label 
+            style={{ 
+              display: "block", 
+              marginBottom: "0.5rem",
+              color: isStrangerThings ? "#e50914" : "inherit"
+            }}
+          >
             Nom du bloc *
           </label>
           <input
@@ -103,15 +109,23 @@ function BlockEditor({ isOpen, onClose, block = null }) {
             style={{
               width: "100%",
               padding: "0.5rem",
-              border: "1px solid #ccc",
+              border: isStrangerThings ? "2px solid #e50914" : "1px solid #ccc",
               borderRadius: "0.25rem",
+              backgroundColor: isStrangerThings ? "#0a0a0a" : "white",
+              color: isStrangerThings ? "#e50914" : "inherit",
             }}
             placeholder="Ex: En-tête de section"
           />
         </div>
 
         <div style={{ marginBottom: "1rem" }}>
-          <label style={{ display: "block", marginBottom: "0.5rem" }}>
+          <label 
+            style={{ 
+              display: "block", 
+              marginBottom: "0.5rem",
+              color: isStrangerThings ? "#e50914" : "inherit"
+            }}
+          >
             Type de contenu
           </label>
           <select
@@ -120,8 +134,10 @@ function BlockEditor({ isOpen, onClose, block = null }) {
             style={{
               width: "100%",
               padding: "0.5rem",
-              border: "1px solid #ccc",
+              border: isStrangerThings ? "2px solid #e50914" : "1px solid #ccc",
               borderRadius: "0.25rem",
+              backgroundColor: isStrangerThings ? "#0a0a0a" : "white",
+              color: isStrangerThings ? "#e50914" : "inherit",
             }}
           >
             <option value="markdown">Markdown</option>
@@ -131,37 +147,46 @@ function BlockEditor({ isOpen, onClose, block = null }) {
         </div>
 
         <div style={{ marginBottom: "1rem" }}>
-          <label style={{ display: "block", marginBottom: "0.5rem" }}>
+          <label 
+            style={{ 
+              display: "block", 
+              marginBottom: "0.5rem",
+              color: isStrangerThings ? "#e50914" : "inherit"
+            }}
+          >
             Raccourci clavier (optionnel)
           </label>
           <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.5rem" }}>
-            <input
-              type="text"
-              value={shortcut}
-              onChange={(e) => setShortcut(e.target.value)}
-              style={{
-                flex: 1,
-                padding: "0.5rem",
-                border: "1px solid #ccc",
-                borderRadius: "0.25rem",
-              }}
-              placeholder={isMac() ? "Ex: Cmd+Shift+B" : "Ex: Ctrl+Shift+B"}
-            />
-            <select
-              value=""
-              onChange={(e) => {
-                if (e.target.value) {
-                  setShortcut(getShortcutValue(SHORTCUT_PRESETS.find(p => p.value === e.target.value || p.macValue === e.target.value)));
-                  e.target.value = "";
-                }
-              }}
-              style={{
-                padding: "0.5rem",
-                border: "1px solid #ccc",
-                borderRadius: "0.25rem",
-                backgroundColor: "#fff",
-              }}
-            >
+          <input
+            type="text"
+            value={shortcut}
+            onChange={(e) => setShortcut(e.target.value)}
+            style={{
+              flex: 1,
+              padding: "0.5rem",
+              border: isStrangerThings ? "2px solid #e50914" : "1px solid #ccc",
+              borderRadius: "0.25rem",
+              backgroundColor: isStrangerThings ? "#0a0a0a" : "white",
+              color: isStrangerThings ? "#e50914" : "inherit",
+            }}
+            placeholder={isMac() ? "Ex: Cmd+Shift+B" : "Ex: Ctrl+Shift+B"}
+          />
+          <select
+            value=""
+            onChange={(e) => {
+              if (e.target.value) {
+                setShortcut(getShortcutValue(SHORTCUT_PRESETS.find(p => p.value === e.target.value || p.macValue === e.target.value)));
+                e.target.value = "";
+              }
+            }}
+            style={{
+              padding: "0.5rem",
+              border: isStrangerThings ? "2px solid #e50914" : "1px solid #ccc",
+              borderRadius: "0.25rem",
+              backgroundColor: isStrangerThings ? "#0a0a0a" : "#fff",
+              color: isStrangerThings ? "#e50914" : "inherit",
+            }}
+          >
               <option value="">Présets...</option>
               {SHORTCUT_PRESETS.map((preset) => (
                 <option key={preset.value} value={preset.value}>
@@ -173,15 +198,17 @@ function BlockEditor({ isOpen, onClose, block = null }) {
           {shortcut && (
             <div style={{ 
               padding: "0.5rem", 
-              backgroundColor: "#e3f2fd", 
+              backgroundColor: isStrangerThings ? "#1a0000" : "#e3f2fd",
+              border: isStrangerThings ? "1px solid #e50914" : "none",
               borderRadius: "0.25rem",
               fontSize: "0.875rem",
-              marginBottom: "0.5rem"
+              marginBottom: "0.5rem",
+              color: isStrangerThings ? "#e50914" : "inherit"
             }}>
               Raccourci: <strong>{formatShortcut(shortcut)}</strong>
             </div>
           )}
-          <small style={{ color: "#666" }}>
+          <small style={{ color: isStrangerThings ? "#00d4ff" : "#666" }}>
             {isMac() 
               ? "Sur Mac, utilisez Cmd au lieu de Ctrl. Le raccourci sera utilisé pour insérer ce bloc dans l'éditeur."
               : "Le raccourci sera utilisé pour insérer ce bloc dans l'éditeur."
@@ -190,7 +217,13 @@ function BlockEditor({ isOpen, onClose, block = null }) {
         </div>
 
         <div style={{ marginBottom: "1rem" }}>
-          <label style={{ display: "block", marginBottom: "0.5rem" }}>
+          <label 
+            style={{ 
+              display: "block", 
+              marginBottom: "0.5rem",
+              color: isStrangerThings ? "#e50914" : "inherit"
+            }}
+          >
             Contenu *
           </label>
           <textarea
@@ -200,19 +233,29 @@ function BlockEditor({ isOpen, onClose, block = null }) {
               width: "100%",
               minHeight: "200px",
               padding: "0.5rem",
-              border: "1px solid #ccc",
+              border: isStrangerThings ? "2px solid #e50914" : "1px solid #ccc",
               borderRadius: "0.25rem",
               fontFamily: "monospace",
+              backgroundColor: isStrangerThings ? "#0a0a0a" : "white",
+              color: isStrangerThings ? "#e50914" : "inherit",
             }}
             placeholder="Entrez le contenu du bloc (Markdown ou HTML)"
           />
         </div>
 
         <div style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end" }}>
-          <Button onClick={onClose} variant="secondary">
+          <Button 
+            onClick={onClose} 
+            variant="secondary"
+            className={isStrangerThings ? "stranger-things-button" : ""}
+          >
             Annuler
           </Button>
-          <Button onClick={handleSubmit} variant="primary">
+          <Button 
+            onClick={handleSubmit} 
+            variant="primary"
+            className={isStrangerThings ? "stranger-things-button" : ""}
+          >
             {block ? "Modifier" : "Créer"}
           </Button>
         </div>

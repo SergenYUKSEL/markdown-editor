@@ -1,4 +1,3 @@
-/* Reset et styles de base */
 * {
   margin: 0;
   padding: 0;
@@ -25,20 +24,17 @@ code {
   overflow: hidden;
 }
 
-/* Styles globaux pour les liens */
 a {
   color: inherit;
   text-decoration: none;
 }
 
-/* Styles pour les inputs et textareas */
 input,
 textarea,
 select {
   font-family: inherit;
 }
 
-/* Scrollbar personnalisée (optionnel) */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;

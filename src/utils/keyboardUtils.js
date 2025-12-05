@@ -1,6 +1,3 @@
-// Utilitaires pour la gestion des raccourcis clavier avec compatibilité Mac
-
-// Détecter si on est sur Mac
 export const isMac = () => {
   return (
     navigator.platform.toUpperCase().indexOf("MAC") >= 0 ||
@@ -8,14 +5,12 @@ export const isMac = () => {
   );
 };
 
-// Convertir un raccourci en format lisible selon l'OS
 export const formatShortcut = (shortcut) => {
   if (!shortcut) return "";
 
   const mac = isMac();
   let formatted = shortcut;
 
-  // Remplacer Ctrl par Cmd sur Mac
   if (mac) {
     formatted = formatted.replace(/Ctrl/gi, "Cmd");
     formatted = formatted.replace(/Control/gi, "Cmd");
@@ -24,11 +19,9 @@ export const formatShortcut = (shortcut) => {
   return formatted;
 };
 
-// Convertir un raccourci en format normalisé pour la comparaison
 export const normalizeShortcut = (shortcut) => {
   if (!shortcut) return "";
 
-  // Normaliser : mettre en minuscules, remplacer les espaces, etc.
   return shortcut
     .toLowerCase()
     .replace(/\s+/g, "")
@@ -36,7 +29,6 @@ export const normalizeShortcut = (shortcut) => {
     .replace(/ctrl/gi, "control");
 };
 
-// Parser un raccourci depuis un string (ex: "Ctrl+Shift+B" ou "Cmd+Shift+B")
 export const parseShortcut = (shortcutString) => {
   if (!shortcutString) return null;
 
@@ -51,13 +43,11 @@ export const parseShortcut = (shortcutString) => {
 
   parts.forEach((part) => {
     if (part === "ctrl" || part === "control") {
-      // Sur Mac, Ctrl devient meta, sur Windows/Linux reste ctrl
-      // On marque les deux pour compatibilité
       result.ctrl = true;
-      result.meta = true; // Accepter les deux formats
+      result.meta = true;
     } else if (part === "cmd" || part === "meta" || part === "command") {
       result.meta = true;
-      result.ctrl = true; // Accepter les deux formats
+      result.ctrl = true;
     } else if (part === "shift") {
       result.shift = true;
     } else if (part === "alt" || part === "option") {
@@ -70,7 +60,6 @@ export const parseShortcut = (shortcutString) => {
   return result;
 };
 
-// Vérifier si un événement clavier correspond à un raccourci
 export const matchesShortcut = (event, shortcutString) => {
   if (!shortcutString) return false;
 
@@ -79,15 +68,11 @@ export const matchesShortcut = (event, shortcutString) => {
 
   const mac = isMac();
 
-  // Sur Mac, utiliser metaKey, sur Windows/Linux utiliser ctrlKey
-  // Le parsing marque les deux (ctrl et meta) pour compatibilité
   const wantsModifier = parsed.ctrl || parsed.meta;
   const hasModifier = mac ? event.metaKey : event.ctrlKey;
 
-  // Vérifier que la touche correspond
   const keyMatches = event.key.toUpperCase() === parsed.key;
 
-  // Vérifier les modificateurs
   const modifiersMatch =
     hasModifier === wantsModifier &&
     event.shiftKey === parsed.shift &&
@@ -96,7 +81,6 @@ export const matchesShortcut = (event, shortcutString) => {
   return keyMatches && modifiersMatch;
 };
 
-// Présets de raccourcis communs
 export const SHORTCUT_PRESETS = [
   { label: "Bloc 1", value: "Ctrl+Shift+1", macValue: "Cmd+Shift+1" },
   { label: "Bloc 2", value: "Ctrl+Shift+2", macValue: "Cmd+Shift+2" },
@@ -115,7 +99,6 @@ export const SHORTCUT_PRESETS = [
   { label: "Bloc F", value: "Ctrl+Shift+F", macValue: "Cmd+Shift+F" },
 ];
 
-// Obtenir la valeur du raccourci selon l'OS
 export const getShortcutValue = (preset) => {
   return isMac() ? preset.macValue : preset.value;
 };
