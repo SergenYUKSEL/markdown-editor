@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import '../styles/strangerThings.css';
 
-// But : afficher l'arborescence de fichiers/dossiers
-// Props : tree (structure depuis Redux), onSelect, onCreate, onRename, onDelete, onMove
 function TreeView({ 
   tree, 
   onSelect, 
@@ -19,7 +17,6 @@ function TreeView({
   const [draggedItem, setDraggedItem] = useState(null);
   const [dragOverItem, setDragOverItem] = useState(null);
 
-  // Toggle expand/collapse
   const toggleExpand = (id) => {
     setExpanded(prev => ({
       ...prev,
@@ -27,7 +24,6 @@ function TreeView({
     }));
   };
 
-  // Gestion du menu contextuel
   const handleContextMenu = (e, item) => {
     e.preventDefault();
     setContextMenu({
@@ -41,11 +37,9 @@ function TreeView({
     setContextMenu(null);
   };
 
-  // Fonction utilitaire pour vérifier si un nœud est un descendant d'un autre
   const isDescendant = (parentId, childId, node = tree) => {
     if (node.id === childId) return false;
     if (node.id === parentId) {
-      // Vérifier si childId est dans les descendants
       const findInChildren = (n) => {
         if (n.id === childId) return true;
         if (n.children) {
@@ -61,11 +55,9 @@ function TreeView({
     return false;
   };
 
-  // Gestion du drag & drop
   const handleDragStart = (e, item) => {
     setDraggedItem(item);
     e.dataTransfer.effectAllowed = 'move';
-    // Optionnel : ajouter des données pour le drag
     e.dataTransfer.setData('text/plain', item.id);
   };
 
@@ -78,21 +70,18 @@ function TreeView({
       return;
     }
 
-    // Ne pas permettre de drop sur l'élément lui-même
     if (draggedItem.id === targetItem.id) {
       e.dataTransfer.dropEffect = 'none';
       setDragOverItem(null);
       return;
     }
 
-    // Ne pas permettre de déplacer un dossier dans ses propres descendants
     if (draggedItem.type === 'folder' && isDescendant(draggedItem.id, targetItem.id, tree)) {
       e.dataTransfer.dropEffect = 'none';
       setDragOverItem(null);
       return;
     }
 
-    // Permettre le drop uniquement sur les dossiers ou à la racine
     if (targetItem.type === 'folder' || targetItem.id === 'root') {
       e.dataTransfer.dropEffect = 'move';
       setDragOverItem(targetItem.id);
@@ -103,7 +92,6 @@ function TreeView({
   };
 
   const handleDragLeave = (e) => {
-    // Ne réinitialiser que si on quitte vraiment la zone (pas juste un enfant)
     const relatedTarget = e.relatedTarget;
     if (!relatedTarget || !e.currentTarget.contains(relatedTarget)) {
       setDragOverItem(null);
@@ -120,21 +108,18 @@ function TreeView({
       return;
     }
     
-    // Ne pas déplacer un élément sur lui-même
     if (draggedItem.id === targetItem.id) {
       setDraggedItem(null);
       setDragOverItem(null);
       return;
     }
 
-    // Ne pas permettre de déplacer un dossier dans ses propres descendants
     if (draggedItem.type === 'folder' && isDescendant(draggedItem.id, targetItem.id, tree)) {
       setDraggedItem(null);
       setDragOverItem(null);
       return;
     }
     
-    // Vérifier que la cible est un dossier ou la racine
     if (targetItem.type === 'folder' || targetItem.id === 'root') {
       const targetParentId = targetItem.id === 'root' ? 'root' : targetItem.id;
       
@@ -152,7 +137,6 @@ function TreeView({
     setDragOverItem(null);
   };
 
-  // Rendu récursif d'un élément de l'arbre
   const renderTreeNode = (node, level = 0) => {
     const isExpanded = expanded[node.id];
     const isFolder = node.type === 'folder';
@@ -250,7 +234,6 @@ function TreeView({
       }}
       onClick={closeContextMenu}
       onDragOver={(e) => {
-        // Permettre le drop à la racine
         e.preventDefault();
         if (draggedItem) {
           e.dataTransfer.dropEffect = 'move';
@@ -312,7 +295,6 @@ function TreeView({
         </div>
       )}
 
-      {/* Menu contextuel */}
       {contextMenu && (
         <div
           className={isStrangerThings ? "stranger-things-context-menu" : ""}

@@ -3,7 +3,6 @@ import TreeView from "../../components/TreeView";
 import {
   createItem,
   deleteItem,
-  renameItem,
   moveItem,
   openFile,
 } from "../../store/slices/filesSlice";
@@ -113,7 +112,6 @@ function FileTree() {
         onMove={handleMove}
       />
 
-      {/* Modal de création */}
       <Modal
         isOpen={showCreateModal}
         onClose={() => setShowCreateModal(false)}
@@ -152,7 +150,6 @@ function FileTree() {
         </div>
       </Modal>
 
-      {/* Modal de renommage */}
       <Modal
         isOpen={showRenameModal}
         onClose={() => setShowRenameModal(false)}

@@ -2,8 +2,6 @@ import { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setStrangerThingsMusic } from "../store/slices/uiSlice";
 
-// Composant global pour gérer la musique Stranger Things
-// Reste actif sur toutes les pages
 function MusicPlayer() {
   const dispatch = useDispatch();
   const theme = useSelector((state) => state.ui.theme);
@@ -12,12 +10,9 @@ function MusicPlayer() {
   const containerRef = useRef(null);
   const hasAutoStarted = useRef(false);
 
-  // Lancer automatiquement la musique quand le thème Stranger Things est activé
   useEffect(() => {
     if (theme === "strangerThings") {
-      // Si la musique n'est pas encore lancée et qu'on n'a pas déjà tenté de la lancer automatiquement
       if (!musicPlaying && !hasAutoStarted.current) {
-        // Attendre un peu pour s'assurer que le composant est monté
         const timer = setTimeout(() => {
           dispatch(setStrangerThingsMusic(true));
           hasAutoStarted.current = true;
@@ -26,7 +21,6 @@ function MusicPlayer() {
         return () => clearTimeout(timer);
       }
     } else {
-      // Réinitialiser le flag si on change de thème
       hasAutoStarted.current = false;
       if (musicPlaying) {
         dispatch(setStrangerThingsMusic(false));
@@ -34,22 +28,18 @@ function MusicPlayer() {
     }
   }, [theme, musicPlaying, dispatch]);
 
-  // Réinitialiser le flag si l'utilisateur arrête manuellement la musique
   useEffect(() => {
     if (!musicPlaying && hasAutoStarted.current) {
-      // L'utilisateur a arrêté la musique, on peut la relancer automatiquement au prochain changement de thème
       hasAutoStarted.current = false;
     }
   }, [musicPlaying]);
 
-  // Ne rien rendre si le thème n'est pas Stranger Things
   if (theme !== "strangerThings") {
     return null;
   }
 
   return (
     <div ref={containerRef} style={{ display: "none" }}>
-      {/* Iframe YouTube pour la musique (cachée) */}
       {musicPlaying && (
         <iframe
           ref={iframeRef}

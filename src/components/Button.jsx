@@ -1,6 +1,4 @@
-// But : bouton réutilisable avec variantes
-// Props : variant (primary, secondary, danger), size (small, medium, large), onClick, disabled, children, className, style
-function Button({ 
+function Button({
     children, 
     onClick, 
     variant = 'primary', 
@@ -10,7 +8,6 @@ function Button({
     className = '',
     style = {}
 }) {
-    // Styles selon la variante
     const variantStyles = {
         primary: {
             backgroundColor: '#007bff',
@@ -29,7 +26,6 @@ function Button({
         }
     };
 
-    // Styles selon la taille
     const sizeStyles = {
         small: {
             padding: '0.25rem 0.5rem',

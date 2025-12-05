@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import FileTree from "./FileTree";
 import FileEditor from "./FileEditor";
@@ -10,7 +9,6 @@ function FilesView() {
   
   return (
     <div style={{ display: "flex", height: "100%", overflow: "hidden" }}>
-      {/* Sidebar avec l'arborescence */}
       <div
         style={{
           width: "300px",
@@ -44,7 +42,6 @@ function FilesView() {
         </div>
       </div>
 
-      {/* Zone d'édition */}
       <div style={{ flex: 1, overflow: "hidden" }}>
         <FileEditor />
       </div>

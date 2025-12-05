@@ -1,6 +1,3 @@
-/* Thème Stranger Things */
-
-/* Styles globaux pour le thème Stranger Things */
 body.stranger-things-theme,
 body.stranger-things-theme #root,
 body.stranger-things-theme #root * {
@@ -13,7 +10,6 @@ body.stranger-things-theme #root {
   background-color: transparent;
 }
 
-/* Application de la police à tous les éléments */
 body.stranger-things-theme,
 body.stranger-things-theme *,
 body.stranger-things-theme div,
@@ -26,7 +22,6 @@ body.stranger-things-theme ol {
   font-family: 'Orbitron', 'Russo One', 'Courier New', monospace !important;
 }
 
-/* Titres avec police plus bold et stylisée */
 body.stranger-things-theme h1,
 body.stranger-things-theme h2,
 body.stranger-things-theme h3,
@@ -39,7 +34,6 @@ body.stranger-things-theme h6 {
   text-transform: uppercase;
 }
 
-/* Inputs et textareas */
 body.stranger-things-theme input,
 body.stranger-things-theme textarea,
 body.stranger-things-theme select,
@@ -49,13 +43,11 @@ body.stranger-things-theme textarea * {
   font-family: 'Orbitron', 'Russo One', 'Courier New', monospace !important;
 }
 
-/* Boutons avec style spécial */
 body.stranger-things-theme button {
   letter-spacing: 0.05em;
   font-weight: 700;
 }
 
-/* Éditeur Markdown inversé à 180 degrés */
 .stranger-things-editor {
   transform: rotate(180deg);
   transform-origin: center;
@@ -83,7 +75,6 @@ body.stranger-things-theme button {
   opacity: 0.5;
 }
 
-/* Prévisualisation avec style Stranger Things */
 .stranger-things-preview {
   background-color: #0a0a0a !important;
   color: #e50914 !important;
@@ -120,7 +111,6 @@ body.stranger-things-theme button {
   text-shadow: 0 0 5px #00d4ff;
 }
 
-/* Sidebar et navigation */
 .stranger-things-sidebar {
   background-color: #1a0000 !important;
   border-right: 2px solid #e50914 !important;
@@ -136,7 +126,6 @@ body.stranger-things-theme button {
   text-shadow: 0 0 10px #00d4ff;
 }
 
-/* Boutons avec style Stranger Things */
 .stranger-things-button {
   background-color: #e50914 !important;
   color: #0a0a0a !important;
@@ -151,7 +140,6 @@ body.stranger-things-theme button {
   box-shadow: 0 0 15px #00d4ff;
 }
 
-/* Arborescence de fichiers */
 .stranger-things-tree {
   background-color: #0a0a0a !important;
   border: 2px solid #e50914 !important;
@@ -163,7 +151,6 @@ body.stranger-things-theme button {
   text-shadow: 0 0 5px #e50914;
 }
 
-/* Menu contextuel Stranger Things */
 .stranger-things-context-menu {
   background-color: #1a0000 !important;
   border: 2px solid #e50914 !important;
@@ -171,7 +158,6 @@ body.stranger-things-theme button {
   color: #e50914 !important;
 }
 
-/* Modales */
 .stranger-things-modal {
   background-color: #1a0000 !important;
   border: 3px solid #e50914 !important;
@@ -183,7 +169,6 @@ body.stranger-things-theme button {
   text-shadow: 0 0 10px #00d4ff;
 }
 
-/* Effet de glitch pour le texte (optionnel) */
 @keyframes glitch {
   0% {
     text-shadow: 2px 0 #e50914, -2px 0 #00d4ff;

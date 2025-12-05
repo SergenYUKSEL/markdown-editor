@@ -41,7 +41,6 @@ function ImagesView() {
       alert("Erreur lors de l'import: " + error.message);
     }
 
-    // Réinitialiser l'input
     e.target.value = "";
   };
 

@@ -22,7 +22,6 @@ function FileEditor() {
   
   const isStrangerThings = theme === "strangerThings";
 
-  // Trouver le fichier actuel
   const currentFile = currentFileId
     ? findFileById(tree, currentFileId)
     : null;
@@ -124,7 +123,6 @@ function FileEditor() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
-      {/* Toolbar */}
       <div
         style={{
           padding: "0.5rem",
@@ -168,7 +166,6 @@ function FileEditor() {
         </div>
       </div>
 
-      {/* Editor/Preview Area */}
       <div
         style={{
           display: "flex",
@@ -210,7 +207,6 @@ function FileEditor() {
         )}
       </div>
 
-      {/* Modal de sélection de bloc */}
       <Modal
         isOpen={showBlockModal}
         onClose={() => setShowBlockModal(false)}
@@ -244,7 +240,6 @@ function FileEditor() {
         </div>
       </Modal>
 
-      {/* Modal de sélection d'image */}
       <Modal
         isOpen={showImageModal}
         onClose={() => setShowImageModal(false)}

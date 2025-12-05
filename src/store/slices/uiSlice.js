@@ -19,7 +19,6 @@ const uiSlice = createSlice({
     },
     setTheme: (state, action) => {
       state.theme = action.payload;
-      // Réinitialiser la musique si on change de thème
       if (action.payload !== "strangerThings") {
         state.strangerThingsMusicPlaying = false;
       }

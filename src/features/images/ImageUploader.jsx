@@ -42,13 +42,11 @@ function ImageUploader({ isOpen, onClose }) {
   };
 
   const handleFile = (file) => {
-    // Vérifier le type de fichier
     if (!file.type.startsWith("image/")) {
       setError("Le fichier doit être une image");
       return;
     }
 
-    // Vérifier la taille (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       setError("L'image est trop grande (max 5MB)");
       return;
@@ -57,7 +55,6 @@ function ImageUploader({ isOpen, onClose }) {
     setError("");
     setImageName(file.name);
 
-    // Lire le fichier en base64
     const reader = new FileReader();
     reader.onload = (e) => {
       const base64 = e.target.result;
@@ -88,7 +85,6 @@ function ImageUploader({ isOpen, onClose }) {
       })
     );
 
-    // Réinitialiser
     setPreview(null);
     setImageData(null);
     setImageName("");

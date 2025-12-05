@@ -16,7 +16,6 @@ function BlockEditor({ isOpen, onClose, block = null }) {
   const [type, setType] = useState("markdown");
   const [error, setError] = useState("");
 
-  // Initialiser les champs si on édite un bloc existant
   useEffect(() => {
     if (block) {
       setName(block.name || "");
@@ -24,7 +23,6 @@ function BlockEditor({ isOpen, onClose, block = null }) {
       setShortcut(block.shortcut || "");
       setType(block.type || "markdown");
     } else {
-      // Réinitialiser pour un nouveau bloc
       setName("");
       setContent("");
       setShortcut("");
@@ -34,7 +32,6 @@ function BlockEditor({ isOpen, onClose, block = null }) {
   }, [block, isOpen]);
 
   const handleSubmit = () => {
-    // Validation
     if (!name.trim()) {
       setError("Le nom est requis");
       return;
@@ -46,7 +43,6 @@ function BlockEditor({ isOpen, onClose, block = null }) {
 
     try {
       if (block) {
-        // Mise à jour
         dispatch(
           updateBlock({
             id: block.id,
@@ -57,7 +53,6 @@ function BlockEditor({ isOpen, onClose, block = null }) {
           })
         );
       } else {
-        // Création
         dispatch(
           addBlock({
             name: name.trim(),

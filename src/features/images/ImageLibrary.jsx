@@ -137,7 +137,6 @@ function ImageLibrary() {
         ))}
       </div>
 
-      {/* Modal de renommage */}
       <Modal
         isOpen={showRenameModal}
         onClose={() => setShowRenameModal(false)}

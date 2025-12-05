@@ -31,13 +31,9 @@ function CollaborationsView() {
   const currentTheme = useSelector((state) => state.ui.theme);
   const musicPlaying = useSelector((state) => state.ui.strangerThingsMusicPlaying);
 
-  // Le thème est géré globalement par Layout.jsx
-
   const handleThemeChange = (themeName) => {
     dispatch(setTheme(themeName));
     if (themeName === "strangerThings") {
-      // La musique se lancera automatiquement via MusicPlayer
-      // On réinitialise le flag pour permettre le lancement auto
     } else {
       dispatch(setStrangerThingsMusic(false));
     }
@@ -65,7 +61,6 @@ function CollaborationsView() {
         </p>
       </div>
 
-      {/* Avertissement pour Stranger Things */}
       {currentTheme === "strangerThings" && (
         <div
           style={{

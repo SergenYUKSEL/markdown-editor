@@ -197,7 +197,6 @@ function BlockList({ onEdit }) {
         </div>
       )}
 
-      {/* Modal de prévisualisation */}
       <Modal
         isOpen={previewBlock !== null}
         onClose={() => setPreviewBlock(null)}

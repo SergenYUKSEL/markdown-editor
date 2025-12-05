@@ -5,7 +5,6 @@ import BlocksView from './features/blocks/BlocksView.jsx'
 import ImagesView from './features/images/ImagesView.jsx'
 import CollaborationsView from './features/collaborations/CollaborationsView.jsx'
 
-// Configuration des routes avec createBrowserRouter (approche moderne React Router v6.4+)
 const router = createBrowserRouter([
   {
     path: '/',
